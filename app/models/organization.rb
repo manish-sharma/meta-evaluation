@@ -13,7 +13,7 @@ class Organization < ApplicationRecord
   end
 
   def generate_access_key
-    self.access_key = AccessKey.get_key(data_for_access_key)
+    self.access_key = AccessKey.get_key data_for_access_key
     self.save
   end
 

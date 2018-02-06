@@ -2,8 +2,8 @@ require 'jwt'
 
 class AccessKey
 
-  HMAC_SECRET = 'my$ecretK3y'
-  EXPIRATION_TIME = Time.now.to_i + 1.years.seconds
+  HMAC_SECRET = ENV["JWT_HMAC_SECRET"]
+  EXPIRATION_TIME = Time.now.to_i + ENV["ACCESS_KEY_EXPIRATION_TIME"]
 
   class << self
 
@@ -23,8 +23,10 @@ class AccessKey
     # @return [Hash] payload for jwt is returned
     # @example
     #  payload {:iat => "2015-12-02T19:32:28.289+05:30", :exp => Time.now.to_i + 1.hour.seconds}
+    # @raise ArgumentError if payload data is not a hash
     # @author Shobhit Dixit
     def generate_payload_from(data)
+      raise ArgumentError, 'Argument is not a Hash' unless data.is_a? Hash
       # adding issued at and expiry time in the access key payload
       data[:iat] = DateTime.now               # issued at
       data[:exp] = EXPIRATION_TIME            # expiration time
@@ -53,7 +55,6 @@ class AccessKey
       rescue JWT::VerificationError
       #invalid signature
         raise JWT::VerificationError
-        return error
       rescue JWT::ExpiredSignature
         raise JWT::ExpiredSignature
       end

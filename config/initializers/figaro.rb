@@ -1,0 +1,1 @@
+Figaro.require_keys("JWT_HMAC_SECRET", "ACCESS_KEY_EXPIRATION_TIME")

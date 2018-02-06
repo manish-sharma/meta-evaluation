@@ -28,6 +28,7 @@ gem 'puma', '~> 3.7'
 
 gem 'acts_as_tenant', '~> 0.4.2'
 gem 'jwt', '~> 2.1.0'
+gem "figaro"
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
