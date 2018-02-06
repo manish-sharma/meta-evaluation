@@ -10,10 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180203111242) do
+ActiveRecord::Schema.define(version: 20180206040308) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "grading_scales", force: :cascade do |t|
+    t.string "name"
+    t.text "description"
+    t.integer "grade_scale_steps"
+    t.boolean "is_for_result"
+    t.string "academic_year_structure_id"
+    t.integer "organization_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["academic_year_structure_id", "name"], name: "index_grading_scales_on_academic_year_structure_id_and_name", unique: true
+    t.index ["organization_id"], name: "index_grading_scales_on_organization_id"
+  end
 
   create_table "organizations", force: :cascade do |t|
     t.string "name", null: false
