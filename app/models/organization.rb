@@ -5,6 +5,8 @@ class Organization < ApplicationRecord
 
   after_save :generate_access_key, unless: Proc.new { |organization| organization.access_key.present? }
 
+  enum organization_type: [ :school, :college ]
+
   def data_for_access_key
     {
       :id => id,
