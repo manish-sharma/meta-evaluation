@@ -4,14 +4,14 @@ class CreateGradingScales < ActiveRecord::Migration[5.1]
       t.string :name
       t.text :description
       t.integer :grade_scale_steps
-      t.boolean :is_for_result
-      t.string :academic_year_structure_id
+      t.boolean :is_for_result, default: false
+      t.datetime :deleted_at
       t.integer :organization_id, index: true
-
-
+      t.string :created_by, index: true, null: false
+      t.string :updated_by, index: true, null: false
       t.timestamps
     end
 
-    add_index :grading_scales, [:academic_year_structure_id, :name], unique: true
+    add_index :grading_scales, :name, unique: true
   end
 end

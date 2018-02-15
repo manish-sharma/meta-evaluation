@@ -29,6 +29,9 @@ gem 'puma', '~> 3.7'
 gem 'acts_as_tenant', '~> 0.4.2'
 gem 'jwt', '~> 2.1.0'
 gem "figaro"
+gem "paranoia", "~> 2.2"
+gem 'annotate'
+gem 'active_model_serializers'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -43,7 +46,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rubycritic'
   gem 'yard', '~>0.9.6'
-  # gem 'yard-restful'
+#  gem 'yard-restful'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem

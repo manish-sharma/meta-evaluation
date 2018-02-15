@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::API
+  include ApiRendering
   set_current_tenant_through_filter
 
   before_action :current_organization

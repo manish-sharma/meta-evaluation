@@ -1,3 +1,19 @@
+# == Schema Information
+#
+# Table name: organizations
+#
+#  id                :integer          not null, primary key
+#  name              :string           not null
+#  description       :text
+#  domain_name       :string           not null
+#  organization_type :integer          not null
+#  access_key        :string
+#  created_by        :string           not null
+#  updated_by        :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
+#
+
 class Organization < ApplicationRecord
   validates :domain_name, presence: true, uniqueness: true
   validates :name, presence: true, length: { minimum: 2 }
