@@ -21,7 +21,8 @@ class GradingScale < ApplicationRecord
   has_many :grading_scale_steps, dependent: :destroy
   validates :name, presence: true, uniqueness: true
   validates :grade_scale_steps, presence: true
-  validates :forbid_update_grade_scale_step, on: :update
+  # custom validations
+  validate :forbid_update_grade_scale_step, on: :update
 
   def bulk_create
     for i in 1..grade_scale_steps

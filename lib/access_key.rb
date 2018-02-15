@@ -3,7 +3,7 @@ require 'jwt'
 class AccessKey
 
   HMAC_SECRET = ENV["JWT_HMAC_SECRET"]
-  EXPIRATION_TIME = Time.now.to_i + ENV["ACCESS_KEY_EXPIRATION_TIME"]
+  EXPIRATION_TIME = Time.now.to_i + (ENV["ACCESS_KEY_EXPIRATION_TIME"]).to_i
 
   class << self
 

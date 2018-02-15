@@ -35,6 +35,6 @@ module Evaluation
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
     # to include access_key.rb in autoload_paths
-    config.eager_load_paths += %W(#{config.root}/lib/access_key)
+      config.autoload_paths << "#{Rails.root}/lib"
   end
 end
