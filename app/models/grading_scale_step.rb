@@ -20,13 +20,14 @@
 class GradingScaleStep < ApplicationRecord
   acts_as_tenant(:organization)
   acts_as_paranoid
-  belongs_to :gradin_scale
+  belongs_to :grading_scale
   after_create :update_grade_scale_step
   after_destroy :update_grade_scale_step
+  after_restore :update_grade_scale_step
 
   def update_grade_scale_step
-    @gradin_scale = self.grading_scale
-    @grading_scale.grade_scale_step = @grading_scale.gradin_scale_steps.size
-    @grading_scale.save(validates: false)
+    @grading_scale = grading_scale
+    @grading_scale.grade_scale_steps = @grading_scale.grading_scale_steps.size
+    @grading_scale.save(validate: false)
   end
 end

@@ -20,14 +20,15 @@ class GradingScale < ApplicationRecord
   acts_as_paranoid
   has_many :grading_scale_steps, dependent: :destroy
   validates :name, presence: true, uniqueness: true
-  validates :grade_scale_steps, presence: true
+  validates :grade_scale_steps, presence: true, :numericality => {:greater_than => 0}
   # custom validations
   validate :forbid_update_grade_scale_step, on: :update
 
-  def bulk_create
-    for i in 1..grade_scale_steps
+  def bulk_create(user)
+    (1..grade_scale_steps).each do |i|
       step_display = "Grading Scale Step #{i}"
-      grading_scale_steps.create( { step_display: step_display} )
+      grading_scale_step = GradingScaleStep.new( { step_display: step_display, created_by: user, updated_by: user, grading_scale_id: id} )
+      grading_scale_step.save!
     end
   end
 
