@@ -24,6 +24,11 @@ class GradingScaleStep < ApplicationRecord
   after_create :update_grade_scale_step
   after_destroy :update_grade_scale_step
   after_restore :update_grade_scale_step
+  validates :step_display, presence: true, uniqueness: {:scope => :grading_scale}
+  validates :numeric_display, presence: true, uniqueness: {:scope => :grading_scale}
+  validates :step_weight, presence: true, uniqueness: {:scope => :grading_scale}
+  validates :maximum, presence: true, uniqueness: {:scope => :grading_scale}
+  validates :minimum, presence: true, uniqueness: {:scope => :grading_scale}
 
   def update_grade_scale_step
     @grading_scale = grading_scale

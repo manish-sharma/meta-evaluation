@@ -28,7 +28,7 @@ class GradingScale < ApplicationRecord
     (1..grade_scale_steps).each do |i|
       step_display = "Grading Scale Step #{i}"
       grading_scale_step = GradingScaleStep.new( { step_display: step_display, created_by: user, updated_by: user, grading_scale_id: id} )
-      grading_scale_step.save!
+      grading_scale_step.save!(validate: false)
     end
   end
 
