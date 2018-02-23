@@ -5,10 +5,10 @@
       # @return [GradingScale] grading scale with grading scale steps
       def create
         ActiveRecord::Base.transaction do
-          @grading_scale = GradingScale.new(grading_scale_params)
-          @grading_scale.created_by = current_user
-          @grading_scale.updated_by = current_user
-          @grading_scale.save
+          @grading_scale = GradingScale.create(grading_scale_params)
+          # @grading_scale.created_by = current_user
+          # @grading_scale.updated_by = current_user
+          # @grading_scale.save
           if @grading_scale.errors.present?
             render_error(@grading_scale.errors.full_messages)
           else
@@ -30,13 +30,15 @@
       # @author Divyanshu
       # @return [Type] success message
       def destroy
-        @grading_scale = GradingScale.find(params[:id])
-        @grading_scale.destroy
+        ActiveRecord::Base.transaction do
+          @grading_scale = GradingScale.find(params[:id])
+          @grading_scale.updated_by = current_user
+          @grading_scale.save
+          @grading_scale.destroy
+        end
         if @grading_scale.errors.present?
           render_error(@grading_scale.errors.full_messages)
         else
-          @grading_scale.updated_by = current_user
-          @grading_scale.save
           render_success
         end
       end
@@ -45,9 +47,11 @@
       # @author Divyanshu
       # @return [GradingScale] grading scale with grading scale steps
       def restore
-        @grading_scale = GradingScale.restore(params[:id], :recursive => true)
-        @grading_scale.updated_by = current_user
-        @grading_scale.save
+        ActiveRecord::Base.transaction do
+          @grading_scale = GradingScale.restore(params[:id], :recursive => true)
+          @grading_scale.updated_by = current_user
+          @grading_scale.save
+        end
         render_object(@grading_scale, { name: 'grading_scale' }, {})
       end
 
@@ -56,7 +60,6 @@
       # @return [GradingScale] grading scale with grading scale steps
       def update
         @grading_scale = GradingScale.find(params[:id])
-        grading_scale_params[:updated_by] = current_user
         @grading_scale.update_attributes(grading_scale_params)
         if @grading_scale.errors.present?
           render_error(@grading_scale.errors.full_messages)
@@ -76,6 +79,6 @@
       private
 
       def grading_scale_params
-        params.require(:grading_scale).permit(:id, :name, :description, :grade_scale_steps, :is_for_result)
+        params.require(:grading_scale).permit(:id, :name, :description, :grade_scale_steps, :is_for_result, :created_by, :updated_by)
       end
     end

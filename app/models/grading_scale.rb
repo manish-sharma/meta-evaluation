@@ -18,9 +18,15 @@
 class GradingScale < ApplicationRecord
   acts_as_tenant(:organization)
   acts_as_paranoid
+
+  #associations
   has_many :grading_scale_steps, dependent: :destroy
+  has_many :evaluation_schemes
+
+  #validation
   validates :name, presence: true, uniqueness: true
   validates :grade_scale_steps, presence: true, :numericality => {:greater_than => 0}
+
   # custom validations
   validate :forbid_update_grade_scale_step, on: :update
 

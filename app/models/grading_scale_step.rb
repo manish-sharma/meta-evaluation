@@ -20,10 +20,16 @@
 class GradingScaleStep < ApplicationRecord
   acts_as_tenant(:organization)
   acts_as_paranoid
+
+  #associations
   belongs_to :grading_scale
+
+  #callbacks
   after_create :update_grade_scale_step
   after_destroy :update_grade_scale_step
   after_restore :update_grade_scale_step
+
+  #validations
   validates :step_display, presence: true, uniqueness: {:scope => :grading_scale}
   validates :numeric_display, presence: true, uniqueness: {:scope => :grading_scale}
   validates :step_weight, presence: true, uniqueness: {:scope => :grading_scale}

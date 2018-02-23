@@ -10,23 +10,47 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180213104528) do
+ActiveRecord::Schema.define(version: 20180220072829) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "evaluation_components", force: :cascade do |t|
+    t.string "name"
+    t.integer "component_structure"
+    t.integer "calculation_method", default: 0
+    t.integer "sequence"
+    t.string "remarks"
+    t.string "code"
+    t.boolean "is_active"
+    t.bigint "parent_evaluation_component_id"
+    t.bigint "evaluation_scheme_id"
+    t.bigint "academic_year_id"
+    t.datetime "deleted_at"
+    t.integer "organization_id"
+    t.string "created_by", null: false
+    t.string "updated_by", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by"], name: "index_evaluation_components_on_created_by"
+    t.index ["evaluation_scheme_id"], name: "index_evaluation_components_on_evaluation_scheme_id"
+    t.index ["organization_id"], name: "index_evaluation_components_on_organization_id"
+    t.index ["parent_evaluation_component_id"], name: "index_evaluation_components_on_parent_evaluation_component_id"
+    t.index ["updated_by"], name: "index_evaluation_components_on_updated_by"
+  end
+
   create_table "evaluation_schemes", force: :cascade do |t|
     t.string "name", null: false
-    t.integer "type"
+    t.integer "scheme_type"
     t.boolean "is_active", default: false
     t.integer "term_count"
     t.integer "stage_count"
-    t.integer "event_marks_decimal_places"
-    t.integer "event_scaled_marks_decimal_places"
-    t.integer "stage_marks_decimal_places"
-    t.integer "sub_event_marks_decimal_places"
+    t.integer "event_marks_decimal_places", default: 2
+    t.integer "event_scaled_marks_decimal_places", default: 2
+    t.integer "stage_marks_decimal_places", default: 2
+    t.integer "sub_event_marks_decimal_places", default: 2
     t.integer "absentee_aggregation_rule"
-    t.boolean "is_practical"
+    t.boolean "is_practical", default: false
     t.bigint "department_id"
     t.bigint "academic_year_id"
     t.datetime "deleted_at"
@@ -41,22 +65,16 @@ ActiveRecord::Schema.define(version: 20180213104528) do
     t.index ["is_active"], name: "index_evaluation_schemes_on_is_active"
     t.index ["name"], name: "index_evaluation_schemes_on_name"
     t.index ["organization_id"], name: "index_evaluation_schemes_on_organization_id"
-    t.index ["type"], name: "index_evaluation_schemes_on_type"
+    t.index ["scheme_type"], name: "index_evaluation_schemes_on_scheme_type"
     t.index ["updated_by"], name: "index_evaluation_schemes_on_updated_by"
   end
 
   create_table "evaluation_stages", force: :cascade do |t|
     t.string "name"
     t.integer "sequence"
-    t.datetime "start_date"
-    t.datetime "end_date"
-    t.datetime "result_submit_date"
-    t.datetime "result_publish_date"
-    t.datetime "exam_start_date"
-    t.datetime "exam_end_date"
     t.bigint "evaluation_term_id"
     t.datetime "deleted_at"
-    t.bigint "academic_year_structure_id"
+    t.bigint "academic_year_id"
     t.integer "organization_id"
     t.string "created_by", null: false
     t.string "updated_by", null: false
@@ -70,15 +88,10 @@ ActiveRecord::Schema.define(version: 20180213104528) do
 
   create_table "evaluation_terms", force: :cascade do |t|
     t.string "name"
-    t.datetime "from_date"
-    t.datetime "to_date"
-    t.integer "working_days"
     t.integer "sequence"
     t.boolean "is_active", default: false
-    t.datetime "result_submit_date"
-    t.datetime "result_publish_date"
     t.bigint "evaluation_scheme_id"
-    t.bigint "academic_year_structure_id"
+    t.bigint "academic_year_id"
     t.datetime "deleted_at"
     t.integer "organization_id"
     t.string "created_by", null: false
