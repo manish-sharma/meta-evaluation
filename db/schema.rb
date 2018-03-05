@@ -17,12 +17,12 @@ ActiveRecord::Schema.define(version: 20180220072829) do
 
   create_table "evaluation_components", force: :cascade do |t|
     t.string "name"
-    t.integer "component_structure"
+    t.string "type"
     t.integer "calculation_method", default: 0
     t.integer "sequence"
     t.string "remarks"
     t.string "code"
-    t.boolean "is_active"
+    t.boolean "is_active", default: false
     t.bigint "parent_evaluation_component_id"
     t.bigint "evaluation_scheme_id"
     t.bigint "academic_year_id"

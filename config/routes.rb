@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :evaluation_schemes
+      resources :evaluation_components
       post 'grading_scales/' => 'grading_scale_and_steps#create'
       get 'grading_scales/' => 'grading_scale_and_steps#index'
       get 'grading_scales/:id' => 'grading_scale_and_steps#show'

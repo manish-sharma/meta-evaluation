@@ -1,0 +1,3 @@
+class MultiOccurenceEvaluationComponent < EvaluationComponent
+  
+end

@@ -2,12 +2,12 @@ class CreateEvaluationComponents < ActiveRecord::Migration[5.1]
   def change
     create_table :evaluation_components do |t|
       t.string :name
-      t.integer :component_structure
+      t.string :type
       t.integer :calculation_method, default: 0
       t.integer :sequence
       t.string :remarks
       t.string :code
-      t.boolean :is_active
+      t.boolean :is_active, default: false
       t.references :parent_evaluation_component
       t.references :evaluation_scheme
       t.bigint :academic_year_id

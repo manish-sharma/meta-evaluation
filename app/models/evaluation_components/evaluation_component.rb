@@ -23,14 +23,22 @@
 
 class EvaluationComponent < ApplicationRecord
 
-  enum component_structure: [:simple, :composite, :multi_occurence]
+  #enums
   enum calculation_method: [:avg, :total, :best_of_all]
 
   acts_as_tenant(:organization)
   acts_as_paranoid
 
-  belongs_to :parent_evaluation_component, :class_name => 'EvaluationComponent', :foreign_key => 'parent_evaluation_component_id'
-  has_many :sub_components, :class_name => 'EvaluationComponent', :foreign_key => 'parent_evaluation_component_id'
+
+  #validation
+  validates :name, presence: true, uniqueness: true
+  validates_presence_of :type, :calculation_method, :sequence, :is_active, :evaluation_scheme_id, :academic_year_id
+
+  #custom validation
+  validate :forbid_update_type, on: :update
 
 
+  def forbid_update_type
+    errors.add(:type, 'can not be updated') if type_changed?
+  end
 end

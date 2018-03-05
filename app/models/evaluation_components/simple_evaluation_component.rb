@@ -1,0 +1,2 @@
+class SimpleEvaluationComponent < EvaluationComponent
+end
