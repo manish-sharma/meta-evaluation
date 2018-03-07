@@ -1,29 +1,17 @@
     class Api::V1::EvaluationSchemesController < Api::V1::BaseController
 
       # Description of #create
-      # @author Divyanshu
       # @return [EvaluationScheme] Returns the the new records of EvaluationScheme
+      # @author Divyanshu
       def create
-        @evaluation_scheme = nil
-        ActiveRecord::Base.transaction do
-          begin
-            @evaluation_scheme = EvaluationScheme.new(evaluation_scheme_params)
-          rescue ArgumentError
-            render_error(['Invalid Scheme Type']) and return
-          end
-          if @evaluation_scheme.valid?
-            @evaluation_scheme.save!
-            @evaluation_scheme.bulk_create_terms_and_stages(evaluation_scheme_params[:academic_year_id], evaluation_scheme_params[:created_by])
-            render_object(@evaluation_scheme, { name: 'evaluation_scheme' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages']})
-          else
-            render_error(@evaluation_scheme.errors.full_messages)
-          end
-        end
+        @evaluation_scheme = EvaluationScheme.create_evaluation_scheme_with_terms_and_stages(evaluation_scheme_params)
+        render_error(@evaluation_scheme.errors.full_messages) and return if @evaluation_scheme.errros.present?
+        render_object(@evaluation_scheme, {name: 'evaluation_schemes'}, {} )
       end
 
       # Description of #destroy
-      # @author Divyanshu
       # @return [String] It returns the success message on deletion of record
+      # @author Divyanshu
       def destroy
         ActiveRecord::Base.transaction do
           @evaluation_scheme = EvaluationScheme.find(params[:id])
@@ -36,8 +24,8 @@
       end
 
       # Description of #index
-      # @author Divyanshu
       # @return [Collection[EvaluationScheme]] It returns the list of evaluation schemes
+      # @author Divyanshu
       def index
         @evaluation_schemes = EvaluationScheme.all
         render_collection(@evaluation_schemes, { name: 'evaluation_schemes' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages']} )
@@ -57,11 +45,8 @@
       def update
         @evaluation_scheme = EvaluationScheme.find(params[:id])
         @evaluation_scheme.update_attributes(evaluation_scheme_params)
-        if @evaluation_scheme.invalid?
-          render_error(@evaluation_scheme.errors.full_messages)
-        else
-          render_object(@evaluation_scheme, { name: 'evaluation_scheme' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages']})
-        end
+        render_error(@evaluation_scheme.errors.full_messages) and return if @evaluation_scheme.errors.present?
+        render_object(@evaluation_scheme, { name: 'evaluation_scheme' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages']})
       end
 
 

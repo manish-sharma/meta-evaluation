@@ -1,76 +1,57 @@
     class Api::V1::GradingScaleAndStepsController < Api::V1::BaseController
 
       # Description of #create
-      # @author Divyanshu
       # @return [GradingScale] grading scale with grading scale steps
+      # @author Divyanshu
       def create
-        ActiveRecord::Base.transaction do
-          @grading_scale = GradingScale.create(grading_scale_params)
-          # @grading_scale.created_by = current_user
-          # @grading_scale.updated_by = current_user
-          # @grading_scale.save
-          if @grading_scale.errors.present?
-            render_error(@grading_scale.errors.full_messages)
-          else
-            @grading_scale.bulk_create(current_user)
-            render_object(@grading_scale, { name: 'grading_scale' }, {})
-          end
-        end
+        @grading_scale = GradingScale.create_grading_scales_with_steps(grading_scale_params)
+        render_error(@grading_scale.errors.full_messages) and return if @grading_scale.errors.present?
+        render_object(@grading_scale, { name: 'grading_scale' }, {})
       end
 
       # Description of #index
-      # @author Divyanshu
       # @return [Collection[GradingScale]] collection of grading scale with grading scale steps
+      # @author Divyanshu
       def index
         @grading_scales = GradingScale.all.includes(:grading_scale_steps)
         render_collection(@grading_scales, { name: 'grading_scales' }, {})
       end
 
       # Description of #destroy
-      # @author Divyanshu
       # @return [Type] success message
+      # @author Divyanshu
       def destroy
         ActiveRecord::Base.transaction do
           @grading_scale = GradingScale.find(params[:id])
-          @grading_scale.updated_by = current_user
-          @grading_scale.save
           @grading_scale.destroy
         end
-        if @grading_scale.errors.present?
-          render_error(@grading_scale.errors.full_messages)
-        else
-          render_success
-        end
+        render_error(@grading_scale.errors.full_messages) and return if @grading_scale.errors.present?
+        render_success
       end
 
       # Description of #restore
-      # @author Divyanshu
       # @return [GradingScale] grading scale with grading scale steps
+      # @author Divyanshu
       def restore
         ActiveRecord::Base.transaction do
           @grading_scale = GradingScale.restore(params[:id], :recursive => true)
-          @grading_scale.updated_by = current_user
-          @grading_scale.save
         end
         render_object(@grading_scale, { name: 'grading_scale' }, {})
       end
 
       # Description of #update
-      # @author Divyanshu
       # @return [GradingScale] grading scale with grading scale steps
+      # @author Divyanshu
       def update
         @grading_scale = GradingScale.find(params[:id])
         @grading_scale.update_attributes(grading_scale_params)
-        if @grading_scale.errors.present?
-          render_error(@grading_scale.errors.full_messages)
-        else
-          render_object(@grading_scale, { name: 'grading_scale' }, {})
-        end
+        render_error(@grading_scale.errors.full_messages) and return if @grading_scale.errors.present?
+        render_object(@grading_scale, { name: 'grading_scale' }, {})
       end
 
       # Description of #show
-      # @author Divyanshu
       # @return [GradingScale] grading scale with grading scale steps
+      # @author Divyanshu
       def show
         @grading_scale = GradingScale.find(params[:id])
         render_object(@grading_scale, { name: 'grading_scale' }, {})

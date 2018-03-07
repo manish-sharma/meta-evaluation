@@ -9,9 +9,10 @@ class ApplicationController < ActionController::API
     set_current_tenant(organization)
   end
 
-
+  # TODO: To be used in future if required. For now it's of no use
   def current_user
     current_user = "12346578"
   end
+
 
 end

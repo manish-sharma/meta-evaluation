@@ -1,16 +1,14 @@
-    class Api::V1::EvaluationComponentsController < Api::V1::BaseController
+# make string literal mutable to improve performance
 
-      @type_hash = {simple: 'SimpleEvaluationComponent', composite: 'CompositeEvaluationComponent', multi_occurence: 'MultiOccurenceEvaluationComponent'}
+class Api::V1::EvaluationComponentsController < Api::V1::BaseController
+
+  #constants
+  TYPE_HASH = {'simple': 'SimpleEvaluationComponent', 'composite': 'CompositeEvaluationComponent', 'multi_occurence': 'MultiOccurenceEvaluationComponent'}
 
       def create
-        type = @type_hash[evaluation_component_params[:type].to_sym]
-        type = @type_hash[:simple] if type.nil?
-        @evaluation_component = type.constantize.new(evaluation_component_params)
-        if @evaluation_component.valid?
-          render_object(@evaluation_component, { name: 'evaluation_component' }, {})
-        else
-          render_error(@evaluation_component.errors.full_messages)
-        end
+        @evaluation_component = TYPE_HASH[evaluation_component_params['type'] || 'simple'].constantize.new(evaluation_component_params)
+        render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.valid?
+        render_error(@evaluation_component.errors.full_messages)
       end
 
       # def destroy
@@ -31,15 +29,12 @@
       end
 
       def update
-        type = @type_hash[evaluation_component_params[:type].to_sym]
-        type = @type_hash[:simple] if type.nil?
-        @evaluation_component = type.constantize.find(evaluation_component_params[:id])
+        type = TYPE_HASH[evaluation_component_params[:type]]
+        type = TYPE_HASH[:simple] if type.nil?
+        @evaluation_component = TYPE_HASH[evaluation_component_params['type'] || 'simple'].constantize.find(params[:id])
         @evaluation_component.update_attributes(evaluation_component_params)
-        if @evaluation_component.valid?
-          render_object(@evaluation_component, { name: 'evaluation_component' }, {})
-        else
-          render_error(@evaluation_component.errors.full_messages)
-        end
+        render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.valid?
+        render_error(@evaluation_component.errors.full_messages)
       end
 
       # def restore

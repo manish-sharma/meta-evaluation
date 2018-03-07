@@ -42,4 +42,12 @@ class GradingScale < ApplicationRecord
     errors.add(:grade_scale_steps, 'can not be changed!') if grade_scale_steps_changed?
   end
 
+
+  def self.create_grading_scales_with_steps(grading_scale_params)
+    ActiveRecord::Base.transaction do
+      @grading_scale = GradingScale.create(grading_scale_params)
+      @grading_scale.bulk_create(grading_scale_params[:created_by]) if @grading_scale.errors.nil?
+    end
+  end
+
 end
