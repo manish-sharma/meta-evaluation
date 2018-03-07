@@ -29,8 +29,6 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
       end
 
       def update
-        type = TYPE_HASH[evaluation_component_params[:type]]
-        type = TYPE_HASH[:simple] if type.nil?
         @evaluation_component = TYPE_HASH[evaluation_component_params['type'] || 'simple'].constantize.find(params[:id])
         @evaluation_component.update_attributes(evaluation_component_params)
         render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.valid?
