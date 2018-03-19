@@ -33,10 +33,9 @@
       # @return [GradingScale] grading scale with grading scale steps
       # @author Divyanshu
       def restore
-        ActiveRecord::Base.transaction do
-          @grading_scale = GradingScale.restore(params[:id], :recursive => true)
-        end
-        render_object(@grading_scale, { name: 'grading_scale' }, {})
+        @grading_scale = GradingScale.restore(params[:id], :recursive => true)
+        render_object(@grading_scale, { name: 'grading_scale' }, {}) and return if @grading_scale.present?
+        render_error(['Error occured while restoring Grading Scale'])
       end
 
       # Description of #update

@@ -1,5 +1,3 @@
-# make string literal mutable to improve performance
-
 class Api::V1::EvaluationComponentsController < Api::V1::BaseController
 
   #constants

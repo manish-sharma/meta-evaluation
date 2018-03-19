@@ -13,14 +13,9 @@
       # @return [String] It returns the success message on deletion of record
       # @author Divyanshu
       def destroy
-        ActiveRecord::Base.transaction do
           @evaluation_scheme = EvaluationScheme.find(params[:id])
-          if @evaluation_scheme.destroy!
-            render_success
-          else
-            render_error(@evaluation_scheme.errors.full_messages)
-          end
-        end
+          render_success and return if @evaluation_scheme.destroy!
+          render_error(@evaluation_scheme.errors.full_messages)
       end
 
       # Description of #index

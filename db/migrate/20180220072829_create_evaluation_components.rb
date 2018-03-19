@@ -8,8 +8,8 @@ class CreateEvaluationComponents < ActiveRecord::Migration[5.1]
       t.string :remarks
       t.string :code
       t.boolean :is_active, default: false
-      t.references :parent_evaluation_component
-      t.references :evaluation_scheme
+      t.references :parent_evaluation_component, index: true
+      t.references :evaluation_scheme, index: true
       t.bigint :academic_year_id
       t.datetime :deleted_at
       t.integer :organization_id, index: true

@@ -3,7 +3,7 @@ class CreateEvaluationStages < ActiveRecord::Migration[5.1]
     create_table :evaluation_stages do |t|
       t.string :name
       t.integer :sequence
-      t.references :evaluation_term
+      t.references :evaluation_term, index: true
       t.datetime :deleted_at
       t.bigint :academic_year_id
       t.integer :organization_id, index: true
