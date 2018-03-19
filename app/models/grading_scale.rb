@@ -31,9 +31,9 @@ class GradingScale < ApplicationRecord
   validate :forbid_update_grade_scale_step, on: :update
 
   def bulk_create(user)
-    (1..grade_scale_steps).each do |i|
-      step_display = "Grading Scale Step #{i}"
-      grading_scale_step = GradingScaleStep.new( { step_display: step_display, created_by: user, updated_by: user, grading_scale_id: id} )
+    byebug
+    grade_scale_steps.times do |i|
+      grading_scale_step = self.grading_scale_steps.new( { step_display: "Grading Scale Step #{i+1}", created_by: user, updated_by: user, grading_scale_id: self.id} )
       grading_scale_step.save!(validate: false)
     end
   end
@@ -46,7 +46,8 @@ class GradingScale < ApplicationRecord
   def self.create_grading_scales_with_steps(grading_scale_params)
     ActiveRecord::Base.transaction do
       @grading_scale = GradingScale.create(grading_scale_params)
-      @grading_scale.bulk_create(grading_scale_params[:created_by]) if @grading_scale.errors.nil?
+      @grading_scale.bulk_create(grading_scale_params[:created_by]) unless @grading_scale.errors.present?
+      @grading_scale
     end
   end
 

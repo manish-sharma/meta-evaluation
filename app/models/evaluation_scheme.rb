@@ -75,12 +75,11 @@ class EvaluationScheme < ApplicationRecord
 
   def self.create_evaluation_scheme_with_terms_and_stages(evaluation_scheme_params)
     ActiveRecord::Base.transaction do
-      begin
+      # begin
         evaluation_scheme = EvaluationScheme.new(evaluation_scheme_params)
-      rescue ArgumentError
-        errors.add(:grade_scale_steps, 'can not be changed!') if grade_scale_steps_changed?
-        render_error(['Invalid Scheme Type']) and return
-      end
+      # rescue ArgumentError
+      #   render_error(['Invalid Scheme Type']) and return
+      # end
       evaluation_scheme.bulk_create_terms_and_stages(evaluation_scheme_params[:academic_year_id], evaluation_scheme_params[:created_by]) if evaluation_scheme.save
       evaluation_scheme
     end
