@@ -47,6 +47,7 @@ class EvaluationScheme < ApplicationRecord
 
   #association
   has_many :evaluation_terms, dependent: :destroy
+  #has_many :evaluation_components , dependent: :destroy
   belongs_to :grading_scale
 
   def forbid_update_term_and_stage

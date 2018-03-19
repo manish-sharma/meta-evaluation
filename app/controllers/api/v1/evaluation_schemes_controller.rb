@@ -36,7 +36,7 @@
       # @return [EvaluationScheme] It returns the EvaluationScheme object
       def show
         @evaluation_scheme = EvaluationScheme.find(params[:id])
-        render_object(@evaluation_scheme, { name: 'evaluation_scheme' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages']})
+        render_object(@evaluation_scheme, { name: 'evaluation_scheme' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages', 'evaluation_components']})
       end
 
       # Description of #update
@@ -49,6 +49,13 @@
         render_object(@evaluation_scheme, { name: 'evaluation_scheme' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages']})
       end
 
+
+      # Description of #apply_evaluation_scheme
+      # @return [String] sucess or error message
+      # @author Divyanshu
+      def apply_evaluation_scheme
+
+      end
 
       private
 

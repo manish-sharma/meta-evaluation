@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       put 'grading_scale_steps/:id' => 'grading_scale_steps#update'
       delete 'grading_scale_steps/:id' => 'grading_scale_steps#destroy'
       put 'grading_scale_steps/:id/restore' => 'grading_scale_steps#restore'
+      put 'evaluation_schemes/:id/apply' => 'evaluation_scheme#apply'
     end
   end
 end

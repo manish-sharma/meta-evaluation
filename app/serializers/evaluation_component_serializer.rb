@@ -1,3 +1,3 @@
 class EvaluationComponentSerializer < ActiveModel::Serializer
-  attributes :id, :name, :type, :active, :calculation_method, :sequence
+  attributes :id, :name, :type, :is_active, :calculation_method, :sequence
 end

@@ -3,11 +3,12 @@
 class Api::V1::EvaluationComponentsController < Api::V1::BaseController
 
   #constants
-  TYPE_HASH = {'simple': 'SimpleEvaluationComponent', 'composite': 'CompositeEvaluationComponent', 'multi_occurence': 'MultiOccurenceEvaluationComponent'}
+  TYPE_HASH = {'simple'=> 'SimpleEvaluationComponent', 'composite'=> 'CompositeEvaluationComponent', 'multi_occurence'=> 'MultiOccurenceEvaluationComponent'}
 
       def create
-        @evaluation_component = TYPE_HASH[evaluation_component_params['type'] || 'simple'].constantize.new(evaluation_component_params)
-        render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.valid?
+        klass = TYPE_HASH[evaluation_component_params['component_type'] || 'simple'].constantize
+        @evaluation_component = klass.new(evaluation_component_params)
+        render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.save
         render_error(@evaluation_component.errors.full_messages)
       end
 
