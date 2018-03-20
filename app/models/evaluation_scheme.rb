@@ -35,18 +35,19 @@ class EvaluationScheme < ApplicationRecord
   enum scheme_type: [:grading, :numeric]
 
   #valiations
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true
   validates :grading_scale_id, presence: true
   validates :scheme_type, presence: true
   validates :academic_year_id, presence: true
   validates :term_count, :stage_count, presence: true, :numericality => {:greater_than => 0}
-
+  validates :name, uniqueness: { scope: [:organization_id] }
   # custom validations
   validate :forbid_update_term_and_stage, on: :update
   validate :forbid_update_scheme_type, on: :update
 
   #association
   has_many :evaluation_terms, dependent: :destroy
+  #has_many :evaluation_components , dependent: :destroy
   belongs_to :grading_scale
 
   def forbid_update_term_and_stage

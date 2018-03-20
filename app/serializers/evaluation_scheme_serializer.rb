@@ -4,4 +4,5 @@ class EvaluationSchemeSerializer < ActiveModel::Serializer
 
   has_many :evaluation_terms
   belongs_to :grading_scale
+  has_many :evaluation_components
 end

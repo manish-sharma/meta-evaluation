@@ -5,7 +5,7 @@
       # @author Divyanshu
       def create
         @evaluation_scheme = EvaluationScheme.create_evaluation_scheme_with_terms_and_stages(evaluation_scheme_params)
-        render_error(@evaluation_scheme.errors.full_messages) and return if @evaluation_scheme.errros.present?
+        render_error(@evaluation_scheme.errors.full_messages) and return if @evaluation_scheme.errors.present?
         render_object(@evaluation_scheme, {name: 'evaluation_schemes'}, {} )
       end
 
@@ -31,7 +31,7 @@
       # @return [EvaluationScheme] It returns the EvaluationScheme object
       def show
         @evaluation_scheme = EvaluationScheme.find(params[:id])
-        render_object(@evaluation_scheme, { name: 'evaluation_scheme' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages']})
+        render_object(@evaluation_scheme, { name: 'evaluation_scheme' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages', 'evaluation_components']})
       end
 
       # Description of #update
@@ -44,6 +44,13 @@
         render_object(@evaluation_scheme, { name: 'evaluation_scheme' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages']})
       end
 
+
+      # Description of #apply_evaluation_scheme
+      # @return [String] sucess or error message
+      # @author Divyanshu
+      def apply_evaluation_scheme
+
+      end
 
       private
 

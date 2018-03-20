@@ -119,6 +119,7 @@ ActiveRecord::Schema.define(version: 20180220072829) do
     t.datetime "updated_at", null: false
     t.index ["created_by"], name: "index_grading_scale_steps_on_created_by"
     t.index ["grading_scale_id"], name: "index_grading_scale_steps_on_grading_scale_id"
+    t.index ["maximum", "minimum", "numeric_display", "step_display", "step_weight", "deleted_at", "organization_id"], name: "uniqueness_index", unique: true
     t.index ["organization_id"], name: "index_grading_scale_steps_on_organization_id"
     t.index ["updated_by"], name: "index_grading_scale_steps_on_updated_by"
   end
@@ -135,7 +136,7 @@ ActiveRecord::Schema.define(version: 20180220072829) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["created_by"], name: "index_grading_scales_on_created_by"
-    t.index ["name"], name: "index_grading_scales_on_name", unique: true
+    t.index ["name", "organization_id", "deleted_at"], name: "index_grading_scales_on_name_and_organization_id_and_deleted_at", unique: true
     t.index ["organization_id"], name: "index_grading_scales_on_organization_id"
     t.index ["updated_by"], name: "index_grading_scales_on_updated_by"
   end

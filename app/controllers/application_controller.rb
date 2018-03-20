@@ -5,7 +5,7 @@ class ApplicationController < ActionController::API
   before_action :current_user
 
   def current_organization
-    organization = Organization.find(AccessKey.get_data(params[:access_key])[:id])
+    organization = Organization.find(AccessKey.get_data(request.headers['HTTP_ACCESS_KEY'])[:id])
     set_current_tenant(organization)
   end
 

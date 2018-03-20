@@ -21,10 +21,8 @@
       # @return [Type] success message
       # @author Divyanshu
       def destroy
-        ActiveRecord::Base.transaction do
-          @grading_scale = GradingScale.find(params[:id])
-          @grading_scale.destroy
-        end
+        @grading_scale = GradingScale.find(params[:id])
+        @grading_scale.destroy
         render_error(@grading_scale.errors.full_messages) and return if @grading_scale.errors.present?
         render_success
       end

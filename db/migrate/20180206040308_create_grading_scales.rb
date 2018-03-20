@@ -12,6 +12,6 @@ class CreateGradingScales < ActiveRecord::Migration[5.1]
       t.timestamps
     end
 
-    add_index :grading_scales, :name, unique: true
+    add_index :grading_scales, [:name,:organization_id,:deleted_at], unique: true
   end
 end
