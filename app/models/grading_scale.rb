@@ -16,16 +16,17 @@
 #
 
 class GradingScale < ApplicationRecord
-  acts_as_tenant(:organization)
-  acts_as_paranoid
+   acts_as_tenant(:organization)
+   acts_as_paranoid
 
   #associations
   has_many :grading_scale_steps, dependent: :destroy
   has_many :evaluation_schemes
 
   #validation
-  validates :name, presence: true, uniqueness: true
+  validates :name, presence: true
   validates :grade_scale_steps, presence: true, :numericality => {:greater_than => 0}
+  validates :name, uniqueness: {scope: [:organization_id,:deleted_at]}
 
   # custom validations
   validate :forbid_update_grade_scale_step, on: :update
@@ -44,9 +45,10 @@ class GradingScale < ApplicationRecord
 
 
   def self.create_grading_scales_with_steps(grading_scale_params)
-    ActiveRecord::Base.transaction do
-      @grading_scale = GradingScale.create(grading_scale_params)
-      @grading_scale.bulk_create(grading_scale_params[:created_by]) if @grading_scale.errors.nil?
+     ActiveRecord::Base.transaction do
+      @grading_scale = GradingScale.new(grading_scale_params)
+      @grading_scale.bulk_create(grading_scale_params[:created_by]) if @grading_scale.save
+      @grading_scale
     end
   end
 

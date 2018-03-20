@@ -5,7 +5,7 @@
       # @author Divyanshu
       def create
         @evaluation_scheme = EvaluationScheme.create_evaluation_scheme_with_terms_and_stages(evaluation_scheme_params)
-        render_error(@evaluation_scheme.errors.full_messages) and return if @evaluation_scheme.errros.present?
+        render_error(@evaluation_scheme.errors.full_messages) and return if @evaluation_scheme.errors.present?
         render_object(@evaluation_scheme, {name: 'evaluation_schemes'}, {} )
       end
 
@@ -13,14 +13,9 @@
       # @return [String] It returns the success message on deletion of record
       # @author Divyanshu
       def destroy
-        ActiveRecord::Base.transaction do
           @evaluation_scheme = EvaluationScheme.find(params[:id])
-          if @evaluation_scheme.destroy!
-            render_success
-          else
-            render_error(@evaluation_scheme.errors.full_messages)
-          end
-        end
+          render_success and return if @evaluation_scheme.destroy!
+          render_error(@evaluation_scheme.errors.full_messages)
       end
 
       # Description of #index

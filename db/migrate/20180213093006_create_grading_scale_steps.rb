@@ -13,5 +13,6 @@ class CreateGradingScaleSteps < ActiveRecord::Migration[5.1]
       t.string :updated_by, index: true, null: false
       t.timestamps
     end
+    add_index :grading_scale_steps, [:maximum,:minimum,:numeric_display,:step_display,:step_weight,:deleted_at,:organization_id], unique: true, name: 'uniqueness_index'
   end
 end
