@@ -63,6 +63,7 @@ ActiveRecord::Schema.define(version: 20180220072829) do
     t.index ["created_by"], name: "index_evaluation_schemes_on_created_by"
     t.index ["grading_scale_id"], name: "index_evaluation_schemes_on_grading_scale_id"
     t.index ["is_active"], name: "index_evaluation_schemes_on_is_active"
+    t.index ["name", "organization_id", "academic_year_id", "deleted_at"], name: "evaluation_scheme_uniqueness_index", unique: true
     t.index ["name"], name: "index_evaluation_schemes_on_name"
     t.index ["organization_id"], name: "index_evaluation_schemes_on_organization_id"
     t.index ["scheme_type"], name: "index_evaluation_schemes_on_scheme_type"

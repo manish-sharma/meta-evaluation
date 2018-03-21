@@ -18,5 +18,4 @@
 class EvaluationStage < ApplicationRecord
   acts_as_tenant(:organization)
   acts_as_paranoid
-  has_many :evaluation_stages, dependent: :destroy
 end

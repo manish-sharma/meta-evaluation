@@ -33,14 +33,15 @@ class EvaluationScheme < ApplicationRecord
 
   #enums
   enum scheme_type: [:grading, :numeric]
+  enum absentee_aggregation_rule: [:assign_zero_marks, :assign_pro_data_marks, :ignore_event]
 
   #valiations
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: {scope: [:name,:academic_year_id,:organization_id,:deleted_at]}
   validates :grading_scale_id, presence: true
   validates :scheme_type, presence: true
   validates :academic_year_id, presence: true
   validates :term_count, :stage_count, presence: true, :numericality => {:greater_than => 0}
-  validates :name, uniqueness: { scope: [:organization_id] }
+
   # custom validations
   validate :forbid_update_term_and_stage, on: :update
   validate :forbid_update_scheme_type, on: :update
@@ -76,11 +77,7 @@ class EvaluationScheme < ApplicationRecord
 
   def self.create_evaluation_scheme_with_terms_and_stages(evaluation_scheme_params)
     ActiveRecord::Base.transaction do
-      # begin
-        evaluation_scheme = EvaluationScheme.new(evaluation_scheme_params)
-      # rescue ArgumentError
-      #   render_error(['Invalid Scheme Type']) and return
-      # end
+      evaluation_scheme = EvaluationScheme.new(evaluation_scheme_params)
       evaluation_scheme.bulk_create_terms_and_stages(evaluation_scheme_params[:academic_year_id], evaluation_scheme_params[:created_by]) if evaluation_scheme.save
       evaluation_scheme
     end
