@@ -10,10 +10,29 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180220072829) do
+ActiveRecord::Schema.define(version: 20180326071921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "evaluation_component_term_stage_details", force: :cascade do |t|
+    t.bigint "evaluation_stage_id"
+    t.decimal "max_marks"
+    t.bigint "evaluation_component_id"
+    t.bigint "academic_year_id"
+    t.datetime "deleted_at"
+    t.integer "organization_id"
+    t.string "created_by", null: false
+    t.string "updated_by", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by"], name: "index_evaluation_component_term_stage_details_on_created_by"
+    t.index ["evaluation_component_id"], name: "ectsd_ec_fk_index"
+    t.index ["evaluation_stage_id", "evaluation_component_id", "academic_year_id", "organization_id", "deleted_at"], name: "uniqueness_index_for_ectsd", unique: true
+    t.index ["evaluation_stage_id"], name: "ectsd_es_fk_index"
+    t.index ["organization_id"], name: "ectsd_organization_fk_index"
+    t.index ["updated_by"], name: "index_evaluation_component_term_stage_details_on_updated_by"
+  end
 
   create_table "evaluation_components", force: :cascade do |t|
     t.string "name"
@@ -34,6 +53,7 @@ ActiveRecord::Schema.define(version: 20180220072829) do
     t.datetime "updated_at", null: false
     t.index ["created_by"], name: "index_evaluation_components_on_created_by"
     t.index ["evaluation_scheme_id"], name: "index_evaluation_components_on_evaluation_scheme_id"
+    t.index ["name", "organization_id", "academic_year_id", "deleted_at"], name: "uniqueness_index_for_evaluation_component"
     t.index ["organization_id"], name: "index_evaluation_components_on_organization_id"
     t.index ["parent_evaluation_component_id"], name: "index_evaluation_components_on_parent_evaluation_component_id"
     t.index ["updated_by"], name: "index_evaluation_components_on_updated_by"
@@ -109,7 +129,9 @@ ActiveRecord::Schema.define(version: 20180220072829) do
     t.decimal "maximum"
     t.decimal "minimum"
     t.integer "numeric_display"
-    t.string "step_display"
+    t.string "step_display_name"
+    t.integer "color"
+    t.integer "result"
     t.integer "step_weight"
     t.datetime "deleted_at"
     t.integer "organization_id"
@@ -120,7 +142,7 @@ ActiveRecord::Schema.define(version: 20180220072829) do
     t.datetime "updated_at", null: false
     t.index ["created_by"], name: "index_grading_scale_steps_on_created_by"
     t.index ["grading_scale_id"], name: "index_grading_scale_steps_on_grading_scale_id"
-    t.index ["maximum", "minimum", "numeric_display", "step_display", "step_weight", "deleted_at", "organization_id"], name: "uniqueness_index", unique: true
+    t.index ["maximum", "minimum", "numeric_display", "step_display_name", "step_weight", "deleted_at", "organization_id"], name: "uniqueness_index", unique: true
     t.index ["organization_id"], name: "index_grading_scale_steps_on_organization_id"
     t.index ["updated_by"], name: "index_grading_scale_steps_on_updated_by"
   end

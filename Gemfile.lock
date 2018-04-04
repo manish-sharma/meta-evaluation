@@ -93,6 +93,18 @@ GEM
     ice_nine (0.11.2)
     jsonapi-renderer (0.2.0)
     jwt (2.1.0)
+    kaminari (1.1.1)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.1.1)
+      kaminari-activerecord (= 1.1.1)
+      kaminari-core (= 1.1.1)
+    kaminari-actionview (1.1.1)
+      actionview
+      kaminari-core (= 1.1.1)
+    kaminari-activerecord (1.1.1)
+      activerecord
+      kaminari-core (= 1.1.1)
+    kaminari-core (1.1.1)
     launchy (2.4.3)
       addressable (~> 2.3)
     listen (3.1.5)
@@ -120,6 +132,7 @@ GEM
     public_suffix (3.0.1)
     puma (3.11.2)
     rack (2.0.4)
+    rack-cors (1.0.2)
     rack-test (0.8.2)
       rack (>= 1.0, < 3)
     rails (5.1.4)
@@ -226,10 +239,12 @@ DEPENDENCIES
   figaro
   hirb
   jwt (~> 2.1.0)
+  kaminari
   listen (>= 3.0.5, < 3.2)
   paranoia (~> 2.2)
   pg (~> 0.18)
   puma (~> 3.7)
+  rack-cors
   rails (~> 5.1.4)
   rspec-rails (~> 3.5)
   rubycritic

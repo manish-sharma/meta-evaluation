@@ -1,3 +1,3 @@
 class GradingScaleStepSerializer < ActiveModel::Serializer
-  attributes :id, :maximum, :minimum, :numeric_display, :step_display, :step_weight
+  attributes :id, :maximum, :minimum, :numeric_display, :step_display_name, :step_weight, :color, :result
 end

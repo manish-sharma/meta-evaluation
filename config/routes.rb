@@ -4,20 +4,14 @@ Rails.application.routes.draw do
   resources :organizations
   namespace :api do
     namespace :v1 do
-      resources :evaluation_schemes
-      resources :evaluation_components
-      post 'grading_scales/' => 'grading_scale_and_steps#create'
-      get 'grading_scales/' => 'grading_scale_and_steps#index'
-      get 'grading_scales/:id' => 'grading_scale_and_steps#show'
-      put 'grading_scales/:id' => 'grading_scale_and_steps#update'
-      delete 'grading_scales/:id' => 'grading_scale_and_steps#destroy'
-      put 'grading_scales/:id/restore' => 'grading_scale_and_steps#restore'
-      post 'grading_scales/:grading_scale_id/grading_scale_steps/' => 'grading_scale_steps#create'
-      get 'grading_scales/:grading_scale_id/grading_scale_steps/:id' => 'grading_scale_steps#show'
-      put 'grading_scales/:grading_scale_id/grading_scale_steps/:id' => 'grading_scale_steps#update'
-      delete 'grading_scales/:grading_scale_id/grading_scale_steps/:id' => 'grading_scale_steps#destroy'
-      put 'grading_scale/:grading_scale_id/grading_scale_steps/:id/restore' => 'grading_scale_steps#restore'
-      put 'evaluation_schemes/:id/apply' => 'evaluation_scheme#apply'
+      resources :grading_scales do
+        resources :grading_scale_steps
+      end
+      resources :evaluation_schemes do
+        resources :evaluation_components
+      end
+      get 'grading_scale_steps/colors_results' => 'grading_scale_steps#colors_results'
+      get 'data_for_new_es' => 'evaluation_schemes#data_for_new_es'
     end
   end
 end

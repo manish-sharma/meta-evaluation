@@ -35,19 +35,13 @@ module ApiRendering extend ActiveSupport::Concern
     if options[:pagination]
       data.merge!(pagination_info(collection))
     end
-    render status: :ok, json: {
-        message: 'success',
-        data: data
-    }
+    render status: :ok, json: data
   end
 
   def render_object(object, options = {}, serialize_options = {})
     data = {}
     data[options[:name]] = ActiveModelSerializers::SerializableResource.new(object, serialize_options)
-    render status: :ok, json: {
-        message: 'success',
-        data: data
-    }
+    render status: :ok, json: data
   end
 
   def pagination_info(collection)

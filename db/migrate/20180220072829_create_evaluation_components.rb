@@ -17,5 +17,6 @@ class CreateEvaluationComponents < ActiveRecord::Migration[5.1]
       t.string :updated_by, index: true, null: false
       t.timestamps
     end
+    add_index :evaluation_components, [:name,:organization_id,:academic_year_id,:deleted_at],name: "uniqueness_index_for_evaluation_component"
   end
 end

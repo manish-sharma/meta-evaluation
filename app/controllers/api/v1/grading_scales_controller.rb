@@ -1,4 +1,4 @@
-    class Api::V1::GradingScaleAndStepsController < Api::V1::BaseController
+    class Api::V1::GradingScalesController < Api::V1::BaseController
 
       # Description of #create
       # @return [GradingScale] grading scale with grading scale steps
@@ -13,18 +13,23 @@
       # @return [Collection[GradingScale]] collection of grading scale with grading scale steps
       # @author Divyanshu
       def index
-        @grading_scales = GradingScale.all.includes(:grading_scale_steps)
-        render_collection(@grading_scales, { name: 'grading_scales' }, {})
+        @grading_scales = GradingScale.includes(:grading_scale_steps).page(params[:page])
+         render_collection(@grading_scales, { name: 'grading_scales' ,pagination: pagination_info(@grading_scales) }, {each_serializer: GradingScaleIndexSerializer})
       end
 
       # Description of #destroy
       # @return [Type] success message
       # @author Divyanshu
       def destroy
-        @grading_scale = GradingScale.find(params[:id])
-        @grading_scale.destroy
-        render_error(@grading_scale.errors.full_messages) and return if @grading_scale.errors.present?
-        render_success
+        @grading_scale = nil
+        ActiveRecord::Base.transaction do
+          @grading_scale = GradingScale.find(params[:id])
+          evaluation_schemes = @grading_scale.evaluation_schemes
+          evaluation_schemes.update_all(grading_scale_id: nil)
+          @grading_scale.destroy
+          render_error(@grading_scale.errors.full_messages) and return if @grading_scale.errors.present? && grading_scale
+          render_success
+        end
       end
 
       # Description of #restore
@@ -59,4 +64,7 @@
       def grading_scale_params
         params.require(:grading_scale).permit(:id, :name, :description, :grade_scale_steps, :is_for_result, :created_by, :updated_by)
       end
+
+
+
     end

@@ -1,11 +1,19 @@
 class MultiOccurenceEvaluationComponent < EvaluationComponent
 
   # custom_validation
-  validate :forbid_adding_child_component, on: :create
+  validate :forbid_add_as_parent_component, on: :create
 
-  def forbid_adding_child_component
-    byebug
-    errors.add(:parent_evaluation_component_id, 'is not allowed as child component') if parent_evaluation_component_id.present?
+  belongs_to :parent_evaluation_component,:class_name => 'EvaluationComponent', :foreign_key => 'parent_evaluation_component_id', optional: true
+
+  def set_default_calculation_method
+    self.calculation_method ||= 'avg'
+  end
+
+  def forbid_add_as_parent_component
+    if parent_evaluation_component_id.present?
+      klass = EvaluationComponent.find(parent_evaluation_component_id).class.name
+      errors.add(:parent_evaluation_component_id,'can not be of type simple/multi occurence type') if klass=="SimpleEvaluationComponent" || klass== "MultiOccurenceEvaluationComponent"
+    end
   end
 
 end

@@ -32,14 +32,14 @@ class EvaluationScheme < ApplicationRecord
   acts_as_paranoid
 
   #enums
-  enum scheme_type: [:grading, :numeric]
-  enum absentee_aggregation_rule: [:assign_zero_marks, :assign_pro_data_marks, :ignore_event]
+  enum scheme_type: {"grading" => 0 , "numeric"=>1}
+  enum absentee_aggregation_rule: {"assign_zero_marks"=>0, "assign_pro_data_marks"=>1, "ignore_event"=>2}
 
   #valiations
   validates :name, presence: true, uniqueness: {scope: [:name,:academic_year_id,:organization_id,:deleted_at]}
   validates :grading_scale_id, presence: true
   validates :scheme_type, presence: true
-  validates :academic_year_id, presence: true
+  # validates :academic_year_id, presence: true
   validates :term_count, :stage_count, presence: true, :numericality => {:greater_than => 0}
 
   # custom validations
@@ -48,7 +48,7 @@ class EvaluationScheme < ApplicationRecord
 
   #association
   has_many :evaluation_terms, dependent: :destroy
-  #has_many :evaluation_components , dependent: :destroy
+  has_many :evaluation_components , dependent: :destroy
   belongs_to :grading_scale
 
   def forbid_update_term_and_stage
