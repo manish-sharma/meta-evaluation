@@ -1,3 +1,4 @@
+require 'access_key'
 class ApplicationController < ActionController::API
   set_current_tenant_through_filter
 
