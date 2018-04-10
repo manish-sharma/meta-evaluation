@@ -9,7 +9,7 @@ class ApplicationController < ActionController::API
   def current_organization
    # organization = Organization.find(AccessKey.get_data(params[:evaluation_access_key])[:id])
    # organization = Organization.find(AccessKey.get_data(request.headers['HTTP_ACCESS_KEY'])[:id])
-   organization = Organization.find(::AccessKey.get_data('eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZG4iOiJ4YXZpZXJqYWlwdXIub3JnIiwiaWF0IjoiMjAxOC0wNC0xMFQxMjozMDo0NCswMDowMCIsImV4cCI6MTUyMzM2NzA0NH0.JUMQ2BfMpVRKsjcNGJpgtUU8ampV5HgqjWvrKxJxyB4')[:id])
+   organization = Organization.find(::AccessKey.get_data('eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZG4iOiJ4YXZpZXJqYWlwdXIub3JnIiwiaWF0IjoiMjAxOC0wNC0xMFQxNDowMzo0NSswMDowMCIsImV4cCI6MTU1OTM2ODkzN30.FLj69DQWYmm8oI6xPBE6Q-ecrinR8SOgq6wt8a0sWK4')[:id])
   set_current_tenant(organization)
   end
 
