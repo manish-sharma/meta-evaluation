@@ -4,9 +4,9 @@
       # @return [GradingScale] grading scale with grading scale steps
       # @author Divyanshu
       def create
-        @grading_scale = GradingScale.create_grading_scales_with_steps(grading_scale_params)
-        render_error(@grading_scale.errors.full_messages) and return if @grading_scale.errors.present?
-        render_object(@grading_scale, { name: 'grading_scale' }, {})
+        @grading_scale = GradingScale.new(grading_scale_params)
+        render_object(@grading_scale, { name: 'grading_scale' }, {}) and return if @grading_scale.save
+        render_error(@grading_scale.errors.full_messages)
       end
 
       # Description of #index

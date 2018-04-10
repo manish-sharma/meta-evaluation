@@ -9,6 +9,7 @@ class CreateGradingScaleSteps < ActiveRecord::Migration[5.1]
       t.integer :result
       t.integer :step_weight
       t.datetime :deleted_at
+      t.integer :lock_version
       t.integer :organization_id, index: true
       t.references :grading_scale, index: true
       t.string :created_by, index: true, null: false

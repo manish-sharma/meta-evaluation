@@ -44,13 +44,13 @@ class GradingScale < ApplicationRecord
   end
 
 
-  def self.create_grading_scales_with_steps(grading_scale_params)
-     ActiveRecord::Base.transaction do
-      @grading_scale = GradingScale.new(grading_scale_params)
-      @grading_scale.save
-      # @grading_scale.bulk_create(grading_scale_params[:created_by]) if @grading_scale.save
-      @grading_scale
-    end
-  end
+  # def self.create_grading_scales_with_steps(grading_scale_params)
+  #    ActiveRecord::Base.transaction do
+  #     @grading_scale = GradingScale.new(grading_scale_params)
+  #     @grading_scale.save
+  #     # @grading_scale.bulk_create(grading_scale_params[:created_by]) if @grading_scale.save
+  #     @grading_scale
+  #   end
+  # end
 
 end

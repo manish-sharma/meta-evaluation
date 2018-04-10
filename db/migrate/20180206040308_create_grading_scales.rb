@@ -6,6 +6,7 @@ class CreateGradingScales < ActiveRecord::Migration[5.1]
       t.integer :grade_scale_steps
       t.boolean :is_for_result, default: false
       t.datetime :deleted_at
+      t.integer :lock_version
       t.integer :organization_id, index: true
       t.string :created_by, index: true, null: false
       t.string :updated_by, index: true, null: false

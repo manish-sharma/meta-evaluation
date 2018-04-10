@@ -38,10 +38,14 @@ ActiveRecord::Schema.define(version: 20180326071921) do
     t.string "name"
     t.string "type"
     t.integer "calculation_method", default: 0
+    t.integer "evaluation_group", default: 0
+    t.integer "category", default: 0
+    t.string "report_card_name"
     t.integer "sequence"
     t.string "remarks"
     t.string "code"
-    t.boolean "is_active", default: false
+    t.boolean "is_active", default: true
+    t.integer "lock_version"
     t.bigint "parent_evaluation_component_id"
     t.bigint "evaluation_scheme_id"
     t.bigint "academic_year_id"
@@ -71,6 +75,7 @@ ActiveRecord::Schema.define(version: 20180326071921) do
     t.integer "sub_event_marks_decimal_places", default: 2
     t.integer "absentee_aggregation_rule"
     t.boolean "is_practical", default: false
+    t.integer "lock_version"
     t.bigint "department_id"
     t.bigint "academic_year_id"
     t.datetime "deleted_at"
@@ -134,6 +139,7 @@ ActiveRecord::Schema.define(version: 20180326071921) do
     t.integer "result"
     t.integer "step_weight"
     t.datetime "deleted_at"
+    t.integer "lock_version"
     t.integer "organization_id"
     t.bigint "grading_scale_id"
     t.string "created_by", null: false
@@ -153,6 +159,7 @@ ActiveRecord::Schema.define(version: 20180326071921) do
     t.integer "grade_scale_steps"
     t.boolean "is_for_result", default: false
     t.datetime "deleted_at"
+    t.integer "lock_version"
     t.integer "organization_id"
     t.string "created_by", null: false
     t.string "updated_by", null: false

@@ -1,5 +1,5 @@
 class EvaluationSchemeSerializer < ActiveModel::Serializer
-  attributes :id, :name, :is_active, :scheme_type,:term_count,:stage_count,:event_marks_decimal_places,:event_scaled_marks_decimal_places,
+  attributes :id, :name, :is_active,:is_practical, :scheme_type,:term_count,:stage_count,:event_marks_decimal_places,:event_scaled_marks_decimal_places,
                   :sub_event_marks_decimal_places,:stage_marks_decimal_places,:absentee_aggregation_rule,:subject_count,:grading_scale_display_name,:grading_scale_id
 
   has_many :evaluation_terms

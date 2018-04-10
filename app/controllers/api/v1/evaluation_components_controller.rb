@@ -14,9 +14,10 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
         klass = TYPE_HASH[evaluation_component_params['component_type'] || 'simple'].constantize
         parameters = evaluation_component_params.to_h.except!('component_type')
         parameters[:evaluation_scheme_id] = params[:evaluation_scheme_id]
+        @evaluation_scheme = EvaluationScheme.find(params[:evaluation_scheme_id])
         if klass.name != "CompositeEvaluationComponent"
           @evaluation_component = EvaluationComponent.create_evaluation_component_with_marks(klass,parameters, evaluation_component_term_stage_detail_params)
-          render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.present?
+          render_collection(@evaluation_scheme.evaluation_components, { name: 'evaluation_components' }, {}) and return if @evaluation_component.present?
         else
           @evaluation_component = klass.create(parameters)
           render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.valid?
@@ -47,7 +48,7 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
       private
 
       def evaluation_component_params
-        params.require(:evaluation_component).permit(:id, :name, :component_type,:type, :calculation_method, :sequence, :remarks, :code, :is_active, :parent_evaluation_component_id,:evaluation_scheme_id,:academic_year_id,:created_by, :updated_by,:parent_evaluation_component_id)
+        params.require(:evaluation_component).permit(:id, :name, :component_type,:type, :calculation_method, :sequence, :remarks, :code, :is_active, :parent_evaluation_component_id,:evaluation_scheme_id,:academic_year_id,:created_by, :updated_by,:parent_evaluation_component_id,:category,:evaluation_group,:report_card_name)
       end
 
       def evaluation_component_term_stage_detail_params

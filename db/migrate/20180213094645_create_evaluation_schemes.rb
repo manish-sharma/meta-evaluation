@@ -12,6 +12,7 @@ class CreateEvaluationSchemes < ActiveRecord::Migration[5.1]
       t.integer :sub_event_marks_decimal_places, default: 2
       t.integer :absentee_aggregation_rule
       t.boolean :is_practical, default: false
+      t.integer :lock_version
       t.bigint :department_id
       t.bigint :academic_year_id
       t.datetime :deleted_at

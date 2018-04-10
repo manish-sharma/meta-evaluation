@@ -24,7 +24,8 @@
 class EvaluationComponent < ApplicationRecord
 
   #enums
-  enum calculation_method: [:avg, :total, :best_of_all]
+  enum calculation_method: {"Average" => 0,"Total" => 1 ,"Best Of All" => 2}
+
 
   acts_as_tenant(:organization)
   acts_as_paranoid
@@ -32,7 +33,7 @@ class EvaluationComponent < ApplicationRecord
 
   #validation
   validates :name, presence: true, uniqueness: {scope: [:organization_id,:academic_year_id,:deleted_at]}
-  validates_presence_of :type, :calculation_method, :sequence, :evaluation_scheme_id, :academic_year_id
+  validates_presence_of :type, :calculation_method, :sequence, :evaluation_scheme_id
   validates_inclusion_of :is_active, in: [true, false]
 
   #custom validation
@@ -51,6 +52,7 @@ class EvaluationComponent < ApplicationRecord
 
   def self.create_evaluation_component_with_marks(klass , params, evaluation_component_term_stage_detail_params)
     ActiveRecord::Base.transaction do
+      byebug
       @evaluation_component = klass.new(params)
       @evaluation_component.bulk_create_details(evaluation_component_term_stage_detail_params) if @evaluation_component.save
       @evaluation_component
