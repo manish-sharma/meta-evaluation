@@ -32,7 +32,6 @@ class GradingScale < ApplicationRecord
   validate :forbid_update_grade_scale_step, on: :update
 
   def bulk_create(user)
-    byebug
     grade_scale_steps.times do |i|
       grading_scale_step = self.grading_scale_steps.new( { step_display: "Grading Scale Step #{i+1}", created_by: user, updated_by: user, grading_scale_id: self.id} )
       grading_scale_step.save!(validate: false)

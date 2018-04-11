@@ -52,7 +52,6 @@ class EvaluationComponent < ApplicationRecord
 
   def self.create_evaluation_component_with_marks(klass , params, evaluation_component_term_stage_detail_params)
     ActiveRecord::Base.transaction do
-      byebug
       @evaluation_component = klass.new(params)
       @evaluation_component.bulk_create_details(evaluation_component_term_stage_detail_params) if @evaluation_component.save
       @evaluation_component
@@ -81,8 +80,11 @@ class EvaluationComponent < ApplicationRecord
   def bulk_update_details(params)
     params[:evaluation_component_term_stage_details].each do |detail|
       detail[:updated_by] = self.updated_by
-        evaluation_component_term_stage_details = self.evaluation_component_term_stage_details.find_or_initialize_by(detail)
-        evaluation_component_term_stage_details.save!
+        evaluation_component_term_stage_details = EvaluationComponentTermStageDetail.where(evaluation_component_id: self.id).where(evaluation_stage_id: detail[:evaluation_stage_id]).try(:first)
+        if evaluation_component_term_stage_details.present?
+          evaluation_component_term_stage_details.max_marks = detail[:max_marks]
+          evaluation_component_term_stage_details.save!
+      end
     end
   end
 
