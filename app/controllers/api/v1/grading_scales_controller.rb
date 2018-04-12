@@ -4,7 +4,7 @@
       # @return [GradingScale] grading scale with grading scale steps
       # @author Divyanshu
       def create
-        @grading_scale = GradingScale.new(grading_scale_params)
+        @grading_scale = GradingScale.new(grading_scale_params.merge({created_by: User.current_user, updated_by: User.current_user}))
         render_object(@grading_scale, { name: 'grading_scale' }, {}) and return if @grading_scale.save
         render_error(@grading_scale.errors.full_messages)
       end
@@ -46,7 +46,7 @@
       # @author Divyanshu
       def update
         @grading_scale = GradingScale.find(params[:id])
-        @grading_scale.update_attributes(grading_scale_params)
+        @grading_scale.update_attributes(grading_scale_params.merge({updated_by: User.current_user}))
         render_error(@grading_scale.errors.full_messages) and return if @grading_scale.errors.present?
         render_object(@grading_scale, { name: 'grading_scale' }, {})
       end

@@ -16,9 +16,9 @@
       # @author Divyanshu
       def create
         @grading_scale = GradingScale.find(params[:grading_scale_id])
-        @grading_scale_step = @grading_scale.grading_scale_steps.create(grading_scale_step_params)
-        render_error(@grading_scale_step.errors.full_messages) and return if @grading_scale_step.errors.present?
-        render_collection(@grading_scale.grading_scale_steps, { name: 'grading_scale_steps' }, {})
+        @grading_scale_step = @grading_scale.grading_scale_steps.new(grading_scale_step_params.merge({created_by: User.current_user, updated_by: User.current_user}))
+        render_collection(@grading_scale.grading_scale_steps, { name: 'grading_scale_steps' }, {}) and return if @grading_scale_step.save
+        render_error(@grading_scale_step.errors.full_messages)
       end
 
       # Description of #destroy
@@ -27,7 +27,7 @@
       def destroy
         @grading_scale_step = GradingScaleStep.find(params[:id])
         @grading_scale_step.destroy
-        render_error(@grading_scale_step.errors.full_messages) if @grading_scale_step.errors.present?
+        render_error(@grading_scale_step.errors.full_messages) and return if @grading_scale_step.errors.present?
         render_success
       end
 
@@ -45,7 +45,7 @@
       def update
         @grading_scale = GradingScale.find(params[:grading_scale_id])
         @grading_scale_step = GradingScaleStep.find(params[:id])
-        @grading_scale_step.update_attributes(grading_scale_step_params)
+        @grading_scale_step.update_attributes(grading_scale_step_params.merge({updated_by: User.current_user}))
         render_error(@grading_scale_step.errors.full_messages) and return if @grading_scale_step.errors.present?
         render_collection(@grading_scale.grading_scale_steps, { name: 'grading_scale_steps' }, {})
       end

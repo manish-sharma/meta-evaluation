@@ -52,7 +52,7 @@ class EvaluationComponent < ApplicationRecord
 
   def self.create_evaluation_component_with_marks(klass , params, evaluation_component_term_stage_detail_params)
     ActiveRecord::Base.transaction do
-      @evaluation_component = klass.new(params)
+      @evaluation_component = klass.new(params.merge({created_by: User.current_user,updated_by: User.current_user}))
       @evaluation_component.bulk_create_details(evaluation_component_term_stage_detail_params) if @evaluation_component.save
       @evaluation_component
     end
@@ -60,26 +60,26 @@ class EvaluationComponent < ApplicationRecord
 
   def bulk_create_details(params)
     params[:evaluation_component_term_stage_details].each do |detail|
-      detail[:created_by] = self.created_by
-      detail[:updated_by] = self.updated_by
+        detail.merge({created_by: User.current_user,updated_by: User.current_user})
         evaluation_component_term_stage_details = self.evaluation_component_term_stage_details.find_or_initialize_by(detail)
         evaluation_component_term_stage_details.save!
     end
   end
 
+
   def self.update_evaluation_component_with_marks(id,evaluation_component_params,evaluation_component_term_stage_detail_params)
     ActiveRecord::Base.transaction do
       klass = evaluation_component_params['type'].constantize
       @evaluation_component = klass.find(id)
-      @evaluation_component.update_attributes(evaluation_component_params)
-      @evaluation_component.bulk_create_update_details(evaluation_component_term_stage_detail_params) if @evaluation_component.valid? && @evaluation_component.type!="CompositeEvaluationComponent"
+      @evaluation_component.update_attributes(evaluation_component_params.merge({updated_by: User.current_user}))
+      @evaluation_component.bulk_update_details(evaluation_component_term_stage_detail_params) if @evaluation_component.valid? && @evaluation_component.type!="CompositeEvaluationComponent"
       @evaluation_component
     end
   end
 
   def bulk_update_details(params)
     params[:evaluation_component_term_stage_details].each do |detail|
-      detail[:updated_by] = self.updated_by
+        detail.merge({updated_by: User.current_user})
         evaluation_component_term_stage_details = EvaluationComponentTermStageDetail.where(evaluation_component_id: self.id).where(evaluation_stage_id: detail[:evaluation_stage_id]).try(:first)
         if evaluation_component_term_stage_details.present?
           evaluation_component_term_stage_details.max_marks = detail[:max_marks]

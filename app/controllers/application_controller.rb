@@ -4,7 +4,6 @@ class ApplicationController < ActionController::API
 
   before_action :current_organization
   before_action :current_user
-  before_action :set_created_by
 
   def current_organization
     # Don't remove below lines
@@ -12,34 +11,13 @@ class ApplicationController < ActionController::API
     # organization = Organization.find(AccessKey.get_data(request.headers['HTTP_ACCESS_KEY'])[:id])
 
     #to be removed after integration with GAE
-    organization = Organization.find(::AccessKey.get_data(ENV["ORG1_ACCESS_KEY"])[:id])
-
+    access_key = request.headers['HTTP_ACCESS_KEY'] ||  ENV["ORG1_ACCESS_KEY"]
+    organization = Organization.find(::AccessKey.get_data(access_key)[:id])
     set_current_tenant(organization)
   end
 
-  # TODO: To be used in future if required. For now it's of no use
   def current_user
-    current_user = params[:current_user]
+    User.set_current_user( params[:current_user] || "DivyanshuD")
   end
-
-  def set_created_by
-    if params.present? && params[:grading_scale].present?
-      params[:grading_scale][:created_by]="Divyanshu"
-      params[:grading_scale][:updated_by]="Divyanshu"
-    end
-    if params.present? && params[:grading_scale_step].present?
-      params[:grading_scale_step][:created_by]="Divyanshu"
-      params[:grading_scale_step][:updated_by]="Divyanshu"
-    end
-    if params.present? && params[:evaluation_scheme].present?
-      params[:evaluation_scheme][:created_by]="Divyanshu"
-      params[:evaluation_scheme][:updated_by]="Divyanshu"
-    end
-    if params.present? && params[:evaluation_component].present?
-      params[:evaluation_component][:created_by]="Divyanshu"
-      params[:evaluation_component][:updated_by]="Divyanshu"
-    end
-  end
-
 
 end

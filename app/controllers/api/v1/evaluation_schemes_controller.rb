@@ -41,7 +41,7 @@
       # @return [EvaluationScheme] It returns the EvaluationScheme updated object
       def update
         @evaluation_scheme = EvaluationScheme.find(params[:id])
-        @evaluation_scheme.update_attributes(evaluation_scheme_params)
+        @evaluation_scheme.update_attributes(evaluation_scheme_params.merge({updated_by: User.current_user}))
         render_error(@evaluation_scheme.errors.full_messages) and return if @evaluation_scheme.errors.present?
         render_object(@evaluation_scheme, { name: 'evaluation_scheme' }, {include: ['grading_scale.grading_scale_steps','evaluation_terms.evaluation_stages']})
       end
