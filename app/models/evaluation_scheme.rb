@@ -4,7 +4,7 @@
 #
 #  id                                :integer          not null, primary key
 #  name                              :string           not null
-#  type                              :integer
+#  scheme_type                       :integer
 #  is_active                         :boolean          default(FALSE)
 #  term_count                        :integer
 #  stage_count                       :integer
@@ -14,6 +14,7 @@
 #  sub_event_marks_decimal_places    :integer          default(2)
 #  absentee_aggregation_rule         :integer
 #  is_practical                      :boolean          default(FALSE)
+#  lock_version                      :integer
 #  department_id                     :integer
 #  academic_year_id                  :integer
 #  deleted_at                        :datetime

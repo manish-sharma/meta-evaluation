@@ -2,19 +2,22 @@
 #
 # Table name: grading_scale_steps
 #
-#  id               :integer          not null, primary key
-#  maximum          :decimal(, )
-#  minimum          :decimal(, )
-#  numeric_display  :integer
-#  step_display     :string
-#  step_weight      :integer
-#  deleted_at       :datetime
-#  organization_id  :integer
-#  grading_scale_id :integer
-#  created_by       :string           not null
-#  updated_by       :string           not null
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
+#  id                :integer          not null, primary key
+#  maximum           :decimal(, )
+#  minimum           :decimal(, )
+#  numeric_display   :integer
+#  step_display_name :string
+#  color             :integer
+#  result            :integer
+#  step_weight       :integer
+#  deleted_at        :datetime
+#  lock_version      :integer
+#  organization_id   :integer
+#  grading_scale_id  :integer
+#  created_by        :string           not null
+#  updated_by        :string           not null
+#  created_at        :datetime         not null
+#  updated_at        :datetime         not null
 #
 
 class GradingScaleStep < ApplicationRecord

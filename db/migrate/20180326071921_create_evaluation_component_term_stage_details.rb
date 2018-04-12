@@ -5,6 +5,7 @@ class CreateEvaluationComponentTermStageDetails < ActiveRecord::Migration[5.1]
       t.decimal :max_marks
       t.references :evaluation_component, index: { name: "ectsd_ec_fk_index" }
       t.bigint :academic_year_id
+      t.integer :lock_version
       t.datetime :deleted_at
       t.integer :organization_id, index:{ name: "ectsd_organization_fk_index" }
       t.string :created_by, index: true, null: false

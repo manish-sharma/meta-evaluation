@@ -8,6 +8,7 @@
 #  grade_scale_steps :integer
 #  is_for_result     :boolean          default(FALSE)
 #  deleted_at        :datetime
+#  lock_version      :integer
 #  organization_id   :integer
 #  created_by        :string           not null
 #  updated_by        :string           not null

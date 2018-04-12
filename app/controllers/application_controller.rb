@@ -7,10 +7,14 @@ class ApplicationController < ActionController::API
   before_action :set_created_by
 
   def current_organization
-   # organization = Organization.find(AccessKey.get_data(params[:evaluation_access_key])[:id])
-   # organization = Organization.find(AccessKey.get_data(request.headers['HTTP_ACCESS_KEY'])[:id])
-   organization = Organization.find(::AccessKey.get_data('eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MSwiZG4iOiJ4YXZpZXJqYWlwdXIub3JnIiwiaWF0IjoiMjAxOC0wNC0xMFQxNDowMzo0NSswMDowMCIsImV4cCI6MTU1OTM2ODkzN30.FLj69DQWYmm8oI6xPBE6Q-ecrinR8SOgq6wt8a0sWK4')[:id])
-  set_current_tenant(organization)
+    # Don't remove below lines
+    # organization = Organization.find(AccessKey.get_data(params[:evaluation_access_key])[:id])
+    # organization = Organization.find(AccessKey.get_data(request.headers['HTTP_ACCESS_KEY'])[:id])
+
+    #to be removed after integration with GAE
+    organization = Organization.find(::AccessKey.get_data(ENV["ORG1_ACCESS_KEY"])[:id])
+
+    set_current_tenant(organization)
   end
 
   # TODO: To be used in future if required. For now it's of no use
@@ -20,21 +24,21 @@ class ApplicationController < ActionController::API
 
   def set_created_by
     if params.present? && params[:grading_scale].present?
-    params[:grading_scale][:created_by]="Divyanshu"
-    params[:grading_scale][:updated_by]="Divyanshu"
-  end
-  if params.present? && params[:grading_scale_step].present?
-  params[:grading_scale_step][:created_by]="Divyanshu"
-  params[:grading_scale_step][:updated_by]="Divyanshu"
-end
-if params.present? && params[:evaluation_scheme].present?
-params[:evaluation_scheme][:created_by]="Divyanshu"
-params[:evaluation_scheme][:updated_by]="Divyanshu"
-end
-if params.present? && params[:evaluation_component].present?
-params[:evaluation_component][:created_by]="Divyanshu"
-params[:evaluation_component][:updated_by]="Divyanshu"
-end
+      params[:grading_scale][:created_by]="Divyanshu"
+      params[:grading_scale][:updated_by]="Divyanshu"
+    end
+    if params.present? && params[:grading_scale_step].present?
+      params[:grading_scale_step][:created_by]="Divyanshu"
+      params[:grading_scale_step][:updated_by]="Divyanshu"
+    end
+    if params.present? && params[:evaluation_scheme].present?
+      params[:evaluation_scheme][:created_by]="Divyanshu"
+      params[:evaluation_scheme][:updated_by]="Divyanshu"
+    end
+    if params.present? && params[:evaluation_component].present?
+      params[:evaluation_component][:created_by]="Divyanshu"
+      params[:evaluation_component][:updated_by]="Divyanshu"
+    end
   end
 
 

@@ -62,7 +62,7 @@
       private
 
       def grading_scale_params
-        params.require(:grading_scale).permit(:id, :name, :description, :grade_scale_steps, :is_for_result, :created_by, :updated_by)
+        params.require(:grading_scale).permit(:id, :name, :description, :grade_scale_steps, :is_for_result, :created_by, :updated_by,:lock_version)
       end
 
 

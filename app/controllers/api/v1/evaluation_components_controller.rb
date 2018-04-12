@@ -33,13 +33,19 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
       end
 
       def show
-        @evaluation_component = EvaluationComponent.find(params[:id])
-        render_object(@evaluation_component, { name: 'evaluation_component' }, {})
+
+        # @evaluation_component = EvaluationComponent.find(params[:id])
+        # render_object(@evaluation_component, { name: 'evaluation_component' }, {})
+        render json: special_show(params[:id]), status: :ok
       end
 
       def update
         @evaluation_component =  EvaluationComponent.update_evaluation_component_with_marks(params[:id],evaluation_component_params,evaluation_component_term_stage_detail_params)
-        render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.present?
+        # render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.present?
+        # render_error(@evaluation_component.errors.full_messages)
+
+
+        render json: special_show(evaluation_component.id), status: :ok and return if @evaluation_component.present?
         render_error(@evaluation_component.errors.full_messages)
       end
 
@@ -48,11 +54,75 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
       private
 
       def evaluation_component_params
-        params.require(:evaluation_component).permit(:id, :name, :component_type,:type, :calculation_method, :sequence, :remarks, :code, :is_active, :parent_evaluation_component_id,:evaluation_scheme_id,:academic_year_id,:created_by, :updated_by,:parent_evaluation_component_id,:category,:evaluation_group,:report_card_name)
+        params.require(:evaluation_component).permit(:id, :name, :component_type,:type, :calculation_method, :sequence, :remarks, :code, :is_active, :parent_evaluation_component_id,:evaluation_scheme_id,:academic_year_id,:created_by, :updated_by,:parent_evaluation_component_id,:category,:evaluation_group,:report_card_name,:lock_version)
       end
 
       def evaluation_component_term_stage_detail_params
-        params.permit(:evaluation_component_term_stage_details => [:id,:evaluation_stage_id,:max_marks])
+        params.permit(:evaluation_component_term_stage_details => [:id,:evaluation_stage_id,:max_marks,:lock_version])
+      end
+
+
+
+
+
+
+
+      def special_show(id)
+        records = EvaluationComponent.select('evaluation_components.id as ec_id,evaluation_components.type as ec_type,evaluation_components.*,evaluation_terms.id as term_id,evaluation_terms.name as term_name,evaluation_terms.sequence as term_sequence,evaluation_stages.id as stage_id,evaluation_stages.name as stage_name,evaluation_stages.sequence as stage_sequence,evaluation_component_term_stage_details.max_marks').left_outer_joins(evaluation_component_term_stage_details: [evaluation_stage: [:evaluation_term]]).group('ec_id,evaluation_terms.id,evaluation_stages.id,evaluation_component_term_stage_details.max_marks').where(id: id).as_json.map{|r| r.deep_symbolize_keys}
+        result = {}
+        result[:evaluation_component]={}
+        records.each do |r|
+
+          # add component detail in hash if not present
+          if !result[:evaluation_component].has_key?(:id)
+            result[:evaluation_component] = {
+              id: r[:ec_id],
+              name: r[:name],
+              type: r[:ec_type],
+              is_active: r[:is_active],
+              calculation_method: r[:calculation_method],
+              evaluation_group: r[:evaluation_group]
+            }
+          end
+
+          # check for component has attribute evaluation_terms
+          if result[:evaluation_component].has_key?(:evaluation_term_stage_details)
+            if !result[:evaluation_component][:evaluation_term_stage_details].pluck(:id).include? r[:term_id]
+              result[:evaluation_component][:evaluation_term_stage_details]<<{
+                id: r[:term_id],
+                name: r[:term_name]
+              }
+            end
+          else
+            result[:evaluation_component][:evaluation_term_stage_details]=[]
+            result[:evaluation_component][:evaluation_term_stage_details]<<{
+              id: r[:term_id],
+              name: r[:term_name]
+            }
+          end
+
+
+
+          # check for component has attribute evaluation_terms
+          index = result[:evaluation_component][:evaluation_term_stage_details].pluck(:id).index(r[:term_id])
+          if result[:evaluation_component][:evaluation_term_stage_details][index].has_key?(:evaluation_stages)
+            if !result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages].pluck(:id).include? r[:stage_id]
+              result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages]<<{
+                id: r[:stage_id],
+                name: r[:stage_name],
+                max_marks: r[:max_marks]
+              }
+            end
+          else
+            result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages]=[]
+            result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages]<<{
+              id: r[:stage_id],
+              name: r[:stage_name],
+              max_marks: r[:max_marks]
+            }
+          end
+        end
+          result
       end
 
     end

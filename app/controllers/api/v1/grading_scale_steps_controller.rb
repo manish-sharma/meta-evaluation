@@ -66,7 +66,7 @@
       private
 
       def grading_scale_step_params
-        params.require(:grading_scale_step).permit(:id, :maximum, :minimum, :step_display_name, :numeric_display, :step_weight, :grading_scale_id,:created_by, :updated_by, :result, :color)
+        params.require(:grading_scale_step).permit(:id, :maximum, :minimum, :step_display_name, :numeric_display, :step_weight, :grading_scale_id,:created_by, :updated_by, :result, :color,:lock_version)
       end
 
     end

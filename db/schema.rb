@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20180326071921) do
     t.decimal "max_marks"
     t.bigint "evaluation_component_id"
     t.bigint "academic_year_id"
+    t.integer "lock_version"
     t.datetime "deleted_at"
     t.integer "organization_id"
     t.string "created_by", null: false

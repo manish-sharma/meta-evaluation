@@ -18,4 +18,6 @@
 class EvaluationStage < ApplicationRecord
   acts_as_tenant(:organization)
   acts_as_paranoid
+
+  belongs_to :evaluation_term
 end

@@ -25,7 +25,7 @@ class EvaluationComponent < ApplicationRecord
 
   #enums
   enum calculation_method: {"Average" => 0,"Total" => 1 ,"Best Of All" => 2}
-
+  enum evaluation_group: {"All"=>0, "Oral"=> 1,"Theory"=>4,"Practical"=>2,"Project"=>3}
 
   acts_as_tenant(:organization)
   acts_as_paranoid

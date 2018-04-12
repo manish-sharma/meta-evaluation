@@ -1,5 +1,5 @@
 class EvaluationSchemeIndexSerializer < ActiveModel::Serializer
-  attributes :id, :name, :scheme_type,:term_count,:stage_count, :is_active,:subject_count,:grading_scale_display_name
+  attributes :id, :name, :scheme_type,:term_count,:stage_count, :is_active,:subject_count,:grading_scale_display_name,:lock_version
 
 # TODO: To be changed when scheme is applied
   def subject_count
