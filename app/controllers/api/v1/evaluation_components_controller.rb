@@ -68,7 +68,11 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
 
 
       def special_show(id)
-        records = EvaluationComponent.select('evaluation_components.id as ec_id,evaluation_components.type as ec_type,evaluation_components.*,evaluation_terms.id as term_id,evaluation_terms.name as term_name,evaluation_terms.sequence as term_sequence,evaluation_stages.id as stage_id,evaluation_stages.name as stage_name,evaluation_stages.sequence as stage_sequence,evaluation_component_term_stage_details.max_marks').left_outer_joins(evaluation_component_term_stage_details: [evaluation_stage: [:evaluation_term]]).group('ec_id,evaluation_terms.id,evaluation_stages.id,evaluation_component_term_stage_details.max_marks').where(id: id).as_json.map{|r| r.deep_symbolize_keys}
+        records = EvaluationComponent.select('evaluation_components.id as ec_id,evaluation_components.type as ec_type,evaluation_components.*,evaluation_terms.id as term_id,evaluation_terms.name as term_name, evaluation_stages.id as stage_id,ectsd.max_marks,evaluation_terms.sequence as term_sequence,evaluation_stages.name as stage_name,evaluation_stages.sequence as stage_sequence')
+        .joins(evaluation_scheme: [evaluation_terms: [:evaluation_stages]])
+        .joins('LEFT OUTER JOIN evaluation_component_term_stage_details as ectsd ON ectsd.evaluation_component_id = evaluation_components.id AND ectsd.evaluation_stage_id=evaluation_stages.id')
+        .group('ec_id,evaluation_terms.id,evaluation_stages.id,ectsd.max_marks').order('evaluation_terms.sequence,evaluation_stages.sequence')
+        .where(id: id).as_json.map{|r| r.deep_symbolize_keys}
         result = {}
         result[:evaluation_component]={}
         records.each do |r|

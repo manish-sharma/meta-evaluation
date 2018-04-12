@@ -41,7 +41,7 @@ class EvaluationComponent < ApplicationRecord
 
   scope :sequence_sorted, -> { order(:sequence)}
 
- scope :parent_evaluation_components, ->{ where(parent_evaluation_component_id: nil)}
+  scope :parent_evaluation_components, ->{ where(parent_evaluation_component_id: nil)}
 
   def forbid_update_type
     errors.add(:type, 'can not be updated') if type_changed?
