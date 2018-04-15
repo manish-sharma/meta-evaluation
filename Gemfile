@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby "2.3.1"
+ruby "2.5.0"
 
 git_source(:github) do |repo_name|
   repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
@@ -29,11 +29,17 @@ gem 'puma', '~> 3.7'
 gem 'acts_as_tenant', '~> 0.4.2'
 gem 'jwt', '~> 2.1.0'
 gem "figaro"
+gem "paranoia", "~> 2.2"
+gem 'annotate'
+gem 'active_model_serializers'
+gem 'kaminari'
+gem 'rack-cors', :require => 'rack/cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.5'
+  gem 'hirb'
 end
 
 group :development do
@@ -43,7 +49,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'rubycritic'
   gem 'yard', '~>0.9.6'
-  # gem 'yard-restful'
+#  gem 'yard-restful'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
