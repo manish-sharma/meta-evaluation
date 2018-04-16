@@ -70,65 +70,65 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
 
 
       # def special_show(id)
-        records = EvaluationComponent.select('evaluation_components.id as ec_id,evaluation_components.type as ec_type,evaluation_components.*,evaluation_terms.id as term_id,evaluation_terms.name as term_name, evaluation_stages.id as stage_id,ectsd.max_marks,evaluation_terms.sequence as term_sequence,evaluation_stages.name as stage_name,evaluation_stages.sequence as stage_sequence')
-        .joins(evaluation_scheme: [evaluation_terms: [:evaluation_stages]])
-        .joins('LEFT OUTER JOIN evaluation_component_term_stage_details as ectsd ON ectsd.evaluation_component_id = evaluation_components.id AND ectsd.evaluation_stage_id=evaluation_stages.id')
-        .group('ec_id,evaluation_terms.id,evaluation_stages.id,ectsd.max_marks').order('evaluation_terms.sequence,evaluation_stages.sequence')
-        .where(id: id).as_json.map{|r| r.deep_symbolize_keys}
-        result = {}
-        result[:evaluation_component]={}
-        records.each do |r|
-
-          # add component detail in hash if not present
-          if !result[:evaluation_component].has_key?(:id)
-            result[:evaluation_component] = {
-              id: r[:ec_id],
-              name: r[:name],
-              type: r[:ec_type],
-              is_active: r[:is_active],
-              calculation_method: r[:calculation_method],
-              evaluation_group: r[:evaluation_group]
-            }
-          end
-
-          # check for component has attribute evaluation_terms
-          if result[:evaluation_component].has_key?(:evaluation_term_stage_details)
-            if !result[:evaluation_component][:evaluation_term_stage_details].pluck(:id).include? r[:term_id]
-              result[:evaluation_component][:evaluation_term_stage_details]<<{
-                id: r[:term_id],
-                name: r[:term_name]
-              }
-            end
-          else
-            result[:evaluation_component][:evaluation_term_stage_details]=[]
-            result[:evaluation_component][:evaluation_term_stage_details]<<{
-              id: r[:term_id],
-              name: r[:term_name]
-            }
-          end
-
-
-
-          # check for component has attribute evaluation_terms
-          index = result[:evaluation_component][:evaluation_term_stage_details].pluck(:id).index(r[:term_id])
-          if result[:evaluation_component][:evaluation_term_stage_details][index].has_key?(:evaluation_stages)
-            if !result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages].pluck(:id).include? r[:stage_id]
-              result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages]<<{
-                id: r[:stage_id],
-                name: r[:stage_name],
-                max_marks: r[:max_marks]
-              }
-            end
-          else
-            result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages]=[]
-            result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages]<<{
-              id: r[:stage_id],
-              name: r[:stage_name],
-              max_marks: r[:max_marks]
-            }
-          end
-        end
-          result
-      end
+      #   records = EvaluationComponent.select('evaluation_components.id as ec_id,evaluation_components.type as ec_type,evaluation_components.*,evaluation_terms.id as term_id,evaluation_terms.name as term_name, evaluation_stages.id as stage_id,ectsd.max_marks,evaluation_terms.sequence as term_sequence,evaluation_stages.name as stage_name,evaluation_stages.sequence as stage_sequence')
+      #   .joins(evaluation_scheme: [evaluation_terms: [:evaluation_stages]])
+      #   .joins('LEFT OUTER JOIN evaluation_component_term_stage_details as ectsd ON ectsd.evaluation_component_id = evaluation_components.id AND ectsd.evaluation_stage_id=evaluation_stages.id')
+      #   .group('ec_id,evaluation_terms.id,evaluation_stages.id,ectsd.max_marks').order('evaluation_terms.sequence,evaluation_stages.sequence')
+      #   .where(id: id).as_json.map{|r| r.deep_symbolize_keys}
+      #   result = {}
+      #   result[:evaluation_component]={}
+      #   records.each do |r|
+      #
+      #     # add component detail in hash if not present
+      #     if !result[:evaluation_component].has_key?(:id)
+      #       result[:evaluation_component] = {
+      #         id: r[:ec_id],
+      #         name: r[:name],
+      #         type: r[:ec_type],
+      #         is_active: r[:is_active],
+      #         calculation_method: r[:calculation_method],
+      #         evaluation_group: r[:evaluation_group]
+      #       }
+      #     end
+      #
+      #     # check for component has attribute evaluation_terms
+      #     if result[:evaluation_component].has_key?(:evaluation_term_stage_details)
+      #       if !result[:evaluation_component][:evaluation_term_stage_details].pluck(:id).include? r[:term_id]
+      #         result[:evaluation_component][:evaluation_term_stage_details]<<{
+      #           id: r[:term_id],
+      #           name: r[:term_name]
+      #         }
+      #       end
+      #     else
+      #       result[:evaluation_component][:evaluation_term_stage_details]=[]
+      #       result[:evaluation_component][:evaluation_term_stage_details]<<{
+      #         id: r[:term_id],
+      #         name: r[:term_name]
+      #       }
+      #     end
+      #
+      #
+      #
+      #     # check for component has attribute evaluation_terms
+      #     index = result[:evaluation_component][:evaluation_term_stage_details].pluck(:id).index(r[:term_id])
+      #     if result[:evaluation_component][:evaluation_term_stage_details][index].has_key?(:evaluation_stages)
+      #       if !result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages].pluck(:id).include? r[:stage_id]
+      #         result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages]<<{
+      #           id: r[:stage_id],
+      #           name: r[:stage_name],
+      #           max_marks: r[:max_marks]
+      #         }
+      #       end
+      #     else
+      #       result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages]=[]
+      #       result[:evaluation_component][:evaluation_term_stage_details][index][:evaluation_stages]<<{
+      #         id: r[:stage_id],
+      #         name: r[:stage_name],
+      #         max_marks: r[:max_marks]
+      #       }
+      #     end
+      #   end
+      #     result
+      # end
 
     end
