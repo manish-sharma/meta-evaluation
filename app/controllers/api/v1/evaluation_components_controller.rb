@@ -37,7 +37,7 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
         # @evaluation_component = EvaluationComponent.find(params[:id])
         # render_object(@evaluation_component, { name: 'evaluation_component' }, {})
         component = CustomQueries.get_component_by_id params[:id]
-        component.map{|x| x["evaluation_term_stage_details"] = ActiveSupport::JSON.decode x["evaluation_term_stage_details"]}
+        component["evaluation_term_stage_details"] = ActiveSupport::JSON.decode component["evaluation_term_stage_details"]
         render json: component, status: :ok
       end
 

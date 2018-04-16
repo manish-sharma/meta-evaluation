@@ -31,7 +31,8 @@ class CustomQueries
        WHERE  evaluation_stages.evaluation_term_id =
        evaluation_terms.id
        ORDER  BY id) esm) AS evaluation_stages
-       FROM   evaluation_terms) terms) AS evaluation_term_stage_details
+       FROM   evaluation_terms WHERE  evaluation_term.evaluation_scheme_id =
+       evaluation_components.evaluation_scheme_id) terms) AS evaluation_term_stage_details
     FROM   evaluation_components where evaluation_components.id=#{component_id}
     and #{current_tenant} and #{not_deleted} limit 1
     ").as_json.first
