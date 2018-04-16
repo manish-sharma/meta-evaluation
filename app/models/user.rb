@@ -3,6 +3,7 @@ class User
    @@current_user = nil
 
    def self.set_current_user(user)
+     raise CustomExceptions::NoCurrentUser, "Current User is not present" unless user.present?
      @@current_user = user
    end
 

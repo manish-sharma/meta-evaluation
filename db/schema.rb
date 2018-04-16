@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180326071921) do
+ActiveRecord::Schema.define(version: 20180416094637) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,22 @@ ActiveRecord::Schema.define(version: 20180326071921) do
     t.index ["organization_id"], name: "index_evaluation_components_on_organization_id"
     t.index ["parent_evaluation_component_id"], name: "index_evaluation_components_on_parent_evaluation_component_id"
     t.index ["updated_by"], name: "index_evaluation_components_on_updated_by"
+  end
+
+  create_table "evaluation_scheme_resources", force: :cascade do |t|
+    t.string "resource_type", null: false
+    t.bigint "resource_id", null: false
+    t.bigint "academic_year_unit_id", null: false
+    t.integer "lock_version"
+    t.datetime "deleted_at"
+    t.integer "organization_id", null: false
+    t.string "created_by", null: false
+    t.string "updated_by", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by"], name: "index_evaluation_scheme_resources_on_created_by"
+    t.index ["resource_id", "resource_type", "academic_year_unit_id", "organization_id", "deleted_at"], name: "uniqueness_index_for_evaluation_scheme_resources", unique: true
+    t.index ["updated_by"], name: "index_evaluation_scheme_resources_on_updated_by"
   end
 
   create_table "evaluation_schemes", force: :cascade do |t|
@@ -188,6 +204,23 @@ ActiveRecord::Schema.define(version: 20180326071921) do
     t.index ["name"], name: "index_organizations_on_name"
     t.index ["organization_type"], name: "index_organizations_on_organization_type"
     t.index ["updated_by"], name: "index_organizations_on_updated_by"
+  end
+
+  create_table "resource_evaluation_schemes", force: :cascade do |t|
+    t.bigint "evaluation_scheme_resource_id", null: false
+    t.bigint "evaluation_scheme_id", null: false
+    t.integer "lock_version"
+    t.datetime "deleted_at"
+    t.integer "organization_id", null: false
+    t.string "created_by", null: false
+    t.string "updated_by", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["created_by"], name: "index_resource_evaluation_schemes_on_created_by"
+    t.index ["evaluation_scheme_id"], name: "index_resource_evaluation_schemes_on_evaluation_scheme_id"
+    t.index ["evaluation_scheme_resource_id", "organization_id", "deleted_at"], name: "uniqueness_index_for_resource_evaluation_schemes", unique: true
+    t.index ["evaluation_scheme_resource_id"], name: "index_on_evaluation_scheme_resource"
+    t.index ["updated_by"], name: "index_resource_evaluation_schemes_on_updated_by"
   end
 
 end

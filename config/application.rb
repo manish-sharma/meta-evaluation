@@ -36,6 +36,7 @@ module Evaluation
     config.api_only = true
     # to include access_key.rb in autoload_paths
       config.autoload_paths << "#{Rails.root}/lib"
+      config.autoload_paths << "#{Rails.root}/lib/custom_exceptions.rb"
     # to include evaluation components sub classes files in autoload_paths
       config.autoload_paths += %W(#{config.root}/app/models/evaluation_components)
       config.autoload_paths += %W(#{config.root}/app/utilities)
