@@ -1,4 +1,4 @@
-module ApiRendering extend ActiveSupport::Concern
+module Respondable extend ActiveSupport::Concern
 
   def render_404(exception)
     render json: {
