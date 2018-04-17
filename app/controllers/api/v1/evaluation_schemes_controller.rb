@@ -8,7 +8,7 @@
       def create
         @evaluation_scheme = EvaluationScheme.create_evaluation_scheme_with_terms_and_stages(evaluation_scheme_params)
         render_error(@evaluation_scheme.errors.full_messages) and return if @evaluation_scheme.errors.present?
-        render_object(@evaluation_scheme, {name: 'evaluation_schemes'}, {include: ['grading_scale','evaluation_terms.evaluation_stages']} )
+        render_object(@evaluation_scheme, {name: 'evaluation_scheme'}, {include: ['grading_scale','evaluation_terms.evaluation_stages']} )
       end
 
       # Description of #destroy

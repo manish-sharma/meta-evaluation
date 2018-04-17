@@ -38,5 +38,6 @@ module Evaluation
       config.autoload_paths << "#{Rails.root}/lib"
     # to include evaluation components sub classes files in autoload_paths
       config.autoload_paths += %W(#{config.root}/app/models/evaluation_components)
+      config.autoload_paths += %W(#{config.root}/app/utilities)
   end
 end
