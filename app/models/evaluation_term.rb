@@ -7,7 +7,6 @@
 #  sequence             :integer
 #  is_active            :boolean          default(FALSE)
 #  evaluation_scheme_id :integer
-#  academic_year_id     :integer
 #  deleted_at           :datetime
 #  organization_id      :integer
 #  created_by           :string           not null

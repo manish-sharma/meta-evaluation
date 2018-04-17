@@ -14,7 +14,6 @@ class CreateEvaluationSchemes < ActiveRecord::Migration[5.1]
       t.boolean :is_practical, default: false
       t.integer :lock_version
       t.bigint :department_id
-      t.bigint :academic_year_id
       t.datetime :deleted_at
       t.references :grading_scale, index: true
       t.integer :organization_id, index: true
@@ -22,6 +21,6 @@ class CreateEvaluationSchemes < ActiveRecord::Migration[5.1]
       t.string :updated_by, index: true, null: false
       t.timestamps
     end
-    add_index :evaluation_schemes, [:name,:organization_id,:academic_year_id,:deleted_at], unique: true, name: "evaluation_scheme_uniqueness_index"
+    add_index :evaluation_schemes, [:name,:organization_id,:deleted_at], unique: true, name: "evaluation_scheme_uniqueness_index"
   end
 end

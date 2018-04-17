@@ -5,7 +5,7 @@
 #  id                             :integer          not null, primary key
 #  name                           :string
 #  type                           :string
-#  calculation_method             :integer          default("Average")
+#  calculation_method             :integer          default(0)
 #  evaluation_group               :integer          default(0)
 #  category                       :integer          default(0)
 #  report_card_name               :string
@@ -16,7 +16,6 @@
 #  lock_version                   :integer
 #  parent_evaluation_component_id :integer
 #  evaluation_scheme_id           :integer
-#  academic_year_id               :integer
 #  deleted_at                     :datetime
 #  organization_id                :integer
 #  created_by                     :string           not null
@@ -30,7 +29,9 @@ class MultiOccurenceEvaluationComponent < EvaluationComponent
   # custom_validation
   validate :forbid_add_as_parent_component, on: :create
 
+  #associations
   belongs_to :parent_evaluation_component,:class_name => 'EvaluationComponent', :foreign_key => 'parent_evaluation_component_id', optional: true
+  accepts_nested_attributes_for :evaluation_component_term_stage_details, reject_if: :all_blank
 
   def set_default_calculation_method
     self.calculation_method ||= 'avg'

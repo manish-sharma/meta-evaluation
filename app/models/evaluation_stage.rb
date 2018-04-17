@@ -7,7 +7,6 @@
 #  sequence           :integer
 #  evaluation_term_id :integer
 #  deleted_at         :datetime
-#  academic_year_id   :integer
 #  organization_id    :integer
 #  created_by         :string           not null
 #  updated_by         :string           not null

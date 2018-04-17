@@ -5,7 +5,7 @@
 #  id                             :integer          not null, primary key
 #  name                           :string
 #  type                           :string
-#  calculation_method             :integer          default("Average")
+#  calculation_method             :integer          default(0)
 #  evaluation_group               :integer          default(0)
 #  category                       :integer          default(0)
 #  report_card_name               :string
@@ -16,7 +16,6 @@
 #  lock_version                   :integer
 #  parent_evaluation_component_id :integer
 #  evaluation_scheme_id           :integer
-#  academic_year_id               :integer
 #  deleted_at                     :datetime
 #  organization_id                :integer
 #  created_by                     :string           not null

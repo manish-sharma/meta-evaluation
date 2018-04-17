@@ -6,7 +6,7 @@
 #  evaluation_stage_id     :integer
 #  max_marks               :decimal(, )
 #  evaluation_component_id :integer
-#  academic_year_id        :integer
+#  lock_version            :integer
 #  deleted_at              :datetime
 #  organization_id         :integer
 #  created_by              :string           not null

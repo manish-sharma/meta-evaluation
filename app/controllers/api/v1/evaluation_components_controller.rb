@@ -13,14 +13,13 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
         @evaluation_component=nil
         klass = TYPE_HASH[evaluation_component_params['component_type'] || 'simple'].constantize
         parameters = evaluation_component_params.to_h.except!('component_type')
-        parameters[:evaluation_scheme_id] = params[:evaluation_scheme_id]
         @evaluation_scheme = EvaluationScheme.find(params[:evaluation_scheme_id])
         if klass.name != "CompositeEvaluationComponent"
-          @evaluation_component = EvaluationComponent.create_evaluation_component_with_marks(klass,parameters, evaluation_component_term_stage_detail_params)
-          render_collection(@evaluation_scheme.evaluation_components, { name: 'evaluation_components' }, {}) and return if @evaluation_component.present?
+          @evaluation_component = EvaluationComponent.create_evaluation_component_with_marks(klass,parameters)
+          render_collection(@evaluation_scheme.evaluation_components, { name: 'evaluation_components' }, {}) and return if @evaluation_component.valid?
         else
-          @evaluation_component = klass.create(parameters)
-          render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.valid?
+          @evaluation_component = klass.new(parameters)
+          render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.save
         end
         render_error(@evaluation_component.errors.full_messages)
       end
@@ -33,7 +32,6 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
       end
 
       def show
-
         # @evaluation_component = EvaluationComponent.find(params[:id])
         # render_object(@evaluation_component, { name: 'evaluation_component' }, {})
         component = CustomQueries.get_component_by_id params[:id]
@@ -42,26 +40,29 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
       end
 
       def update
-        @evaluation_component =  EvaluationComponent.update_evaluation_component_with_marks(params[:id],evaluation_component_params,evaluation_component_term_stage_detail_params)
-        # render_object(@evaluation_component, { name: 'evaluation_component' }, {}) and return if @evaluation_component.present?
-        # render_error(@evaluation_component.errors.full_messages)
-
-
-        render json: special_show(evaluation_component.id), status: :ok and return if @evaluation_component.present?
-        render_error(@evaluation_component.errors.full_messages)
+        @evaluation_component =  EvaluationComponent.update_evaluation_component_with_marks(params[:id],evaluation_component_params)
+        render_error(@evaluation_component.errors.full_messages) and return if @evaluation_component.errors.present?
+        component = CustomQueries.get_component_by_id params[:id]
+        component["evaluation_term_stage_details"] = ActiveSupport::JSON.decode component["evaluation_term_stage_details"]
+        render json: component, status: :ok
       end
 
 
 
       private
 
+
+      # TODO: Add require(:evaluation_component)
       def evaluation_component_params
-        params.require(:evaluation_component).permit(:id, :name, :component_type,:type, :calculation_method, :sequence, :remarks, :code, :is_active, :parent_evaluation_component_id,:evaluation_scheme_id,:academic_year_id,:created_by, :updated_by,:parent_evaluation_component_id,:category,:evaluation_group,:report_card_name,:lock_version)
+        params.permit(:id, :name, :component_type,:type, :calculation_method, :sequence, :remarks,
+                :code, :is_active, :parent_evaluation_component_id,:evaluation_scheme_id,:parent_evaluation_component_id,:category,
+                :evaluation_group,:report_card_name,:lock_version,
+                evaluation_component_term_stage_details_attributes: [:id,:evaluation_stage_id,:max_marks,:lock_version])
       end
 
-      def evaluation_component_term_stage_detail_params
-        params.permit(:evaluation_component_term_stage_details => [:id,:evaluation_stage_id,:max_marks,:lock_version])
-      end
+      # def evaluation_component_term_stage_detail_params
+      #   params.permit(:evaluation_component_term_stage_details => [:id,:evaluation_stage_id,:max_marks,:lock_version])
+      # end
 
 
 

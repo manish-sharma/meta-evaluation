@@ -53,7 +53,7 @@
 
 
       # Description of #apply_evaluation_scheme
-      # @return [String] sucess or error message
+      # @return [String] success or error message
       # @author Divyanshu
       def apply_evaluation_scheme
 
@@ -62,7 +62,7 @@
       private
 
       def evaluation_scheme_params
-        params.require(:evaluation_scheme).permit(:id, :name, :is_active,:is_practical, :term_count, :stage_count,:scheme_type ,:grading_scale_id, :department_id, :academic_year_id, :created_by,
+        params.require(:evaluation_scheme).permit(:id, :name, :is_active,:is_practical, :term_count, :stage_count,:scheme_type ,:grading_scale_id, :department_id,:created_by,
                         :updated_by,:event_marks_decimal_places,:event_scaled_marks_decimal_places,:sub_event_marks_decimal_places,:stage_marks_decimal_places,:absentee_aggregation_rule,:lock_version)
       end
 
