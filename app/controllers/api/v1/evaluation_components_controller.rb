@@ -57,7 +57,7 @@ class Api::V1::EvaluationComponentsController < Api::V1::BaseController
         params.permit(:id, :name, :component_type,:type, :calculation_method, :sequence, :remarks,
                 :code, :is_active, :parent_evaluation_component_id,:evaluation_scheme_id,:parent_evaluation_component_id,:category,
                 :evaluation_group,:report_card_name,:lock_version,
-                evaluation_component_term_stage_details_attributes: [:id,:evaluation_stage_id,:max_marks,:lock_version])
+                evaluation_component_term_stage_details_attributes: [:id,:evaluation_stage_id,:weighted_marks,:lock_version])
       end
 
       # def evaluation_component_term_stage_detail_params

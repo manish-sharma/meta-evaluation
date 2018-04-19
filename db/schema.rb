@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20180326071921) do
 
   create_table "evaluation_component_term_stage_details", force: :cascade do |t|
     t.bigint "evaluation_stage_id"
-    t.decimal "max_marks"
+    t.decimal "weighted_marks"
     t.bigint "evaluation_component_id"
     t.integer "lock_version"
     t.datetime "deleted_at"

@@ -2,7 +2,7 @@ class CreateEvaluationComponentTermStageDetails < ActiveRecord::Migration[5.1]
   def change
     create_table :evaluation_component_term_stage_details do |t|
       t.references :evaluation_stage, index: { name: "ectsd_es_fk_index" }
-      t.decimal :max_marks
+      t.decimal :weighted_marks
       t.references :evaluation_component, index: { name: "ectsd_ec_fk_index" }
       t.integer :lock_version
       t.datetime :deleted_at

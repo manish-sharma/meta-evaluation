@@ -21,7 +21,7 @@ class CustomQueries
                        (SELECT Array_to_json(Array_agg(Row_to_json(esm)))
                         FROM   (SELECT evaluation_stages.id   AS id,
                                        evaluation_stages.NAME AS NAME,
-       evaluation_component_term_stage_details.max_marks
+       evaluation_component_term_stage_details.weighted_marks
        FROM   evaluation_stages
        JOIN evaluation_component_term_stage_details
          ON
